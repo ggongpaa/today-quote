@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>오늘의 명언 뽑기</title>
 
 <style>
+
 * {
   box-sizing: border-box;
 }
@@ -13,81 +15,134 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f4f1e8, #e8efe3);
-  font-family: Arial, sans-serif;
+
+  background:
+    linear-gradient(135deg, #f4f1e8, #e8efe3);
+
+  font-family:
+    Arial,
+    "Noto Sans KR",
+    sans-serif;
+
   color: #333;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   padding: 20px;
 }
 
 .container {
   width: 100%;
   max-width: 480px;
+
   text-align: center;
 }
 
 h1 {
   font-size: 32px;
-  margin: 0 0 10px;
+
+  margin:
+    0 0 8px;
+
   color: #38513b;
+}
+
+.date {
+  font-size: 15px;
+
+  color: #888;
+
+  margin-bottom: 8px;
 }
 
 .subtitle {
   font-size: 15px;
+
   color: #777;
+
   margin-bottom: 25px;
 }
 
 .card {
   background: #fffdf7;
+
   border-radius: 24px;
+
   padding: 40px 28px;
+
   min-height: 330px;
+
   display: flex;
+
   flex-direction: column;
+
   justify-content: center;
-  box-shadow: 0 12px 35px rgba(0,0,0,0.10);
-  border: 1px solid #e4e0d5;
+
+  box-shadow:
+    0 12px 35px
+    rgba(0,0,0,0.10);
+
+  border:
+    1px solid #e4e0d5;
 }
 
 .category {
   display: inline-block;
-  margin: 0 auto 22px;
-  padding: 7px 14px;
+
+  margin:
+    0 auto 22px;
+
+  padding:
+    7px 14px;
+
   border-radius: 20px;
+
   background: #e5eee1;
+
   color: #4d684f;
+
   font-size: 13px;
 }
 
 .quote {
   font-size: 23px;
+
   line-height: 1.7;
+
   font-weight: 600;
+
   word-break: keep-all;
+
   margin-bottom: 22px;
 }
 
 .author {
   font-size: 15px;
+
   color: #888;
 }
 
-button {
-  width: 100%;
-  border: none;
-  border-radius: 15px;
-  padding: 16px;
-  font-size: 17px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 15px;
-}
-
 .draw-button {
+  width: 100%;
+
+  border: none;
+
+  border-radius: 15px;
+
+  padding: 16px;
+
+  font-size: 17px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  margin-top: 15px;
+
   background: #58745a;
+
   color: white;
 }
 
@@ -95,55 +150,95 @@ button {
   transform: scale(0.98);
 }
 
-.save-button {
-  background: #e8e3d6;
-  color: #4d4d4d;
+.draw-button:disabled {
+
+  background: #b8c1b8;
+
+  cursor: default;
+
+  transform: none;
 }
 
 .message {
+
   min-height: 22px;
+
   margin-top: 12px;
+
   font-size: 13px;
+
   color: #777;
+
+  line-height: 1.5;
 }
 
 .footer {
+
   margin-top: 20px;
+
   font-size: 12px;
+
   color: #999;
 }
+
 </style>
 </head>
+
 
 <body>
 
 <div class="container">
 
-  <h1>오늘의 명언 뽑기</h1>
+  <h1>오늘의 명언</h1>
+
+  <div class="date" id="today"></div>
+
   <div class="subtitle">
     지금 당신에게 필요한 한마디를 뽑아보세요
   </div>
 
-  <div class="card">
-    <div class="category" id="category">오늘의 마음</div>
 
-    <div class="quote" id="quote">
-      마음을 다잡고<br>
-      아래 버튼을 눌러보세요.
+  <div class="card">
+
+    <div
+      class="category"
+      id="category"
+    >
+      오늘의 마음
     </div>
 
-    <div class="author" id="author"></div>
+
+    <div
+      class="quote"
+      id="quote"
+    >
+      오늘 당신에게 필요한<br>
+      한마디를 뽑아보세요.
+    </div>
+
+
+    <div
+      class="author"
+      id="author"
+    ></div>
+
   </div>
 
-  <button class="draw-button" onclick="drawQuote()">
+
+  <button
+    class="draw-button"
+    id="drawButton"
+    onclick="drawQuote()"
+  >
     ✨ 오늘의 명언 뽑기
   </button>
 
-  <button class="save-button" onclick="saveQuote()">
-    💾 마음에 담기
-  </button>
 
-  <div class="message" id="message"></div>
+  <div
+    class="message"
+    id="message"
+  ></div>
+
 
   <div class="footer">
     하루에 한 번, 당신에게 필요한 한마디
@@ -151,7 +246,13 @@ button {
 
 </div>
 
+
 <script>
+
+
+/* --------------------------------
+   명언 목록
+-------------------------------- */
 
 const quotes = [
 
@@ -247,169 +348,285 @@ const quotes = [
 
 ];
 
-let currentQuote = null;
+
+/* --------------------------------
+   저장에 사용할 이름
+-------------------------------- */
+
+const STORAGE_KEY =
+  "today_quote_result";
+
+
+/* --------------------------------
+   오늘 날짜
+-------------------------------- */
+
+function getToday() {
+
+  const now = new Date();
+
+  const year =
+    now.getFullYear();
+
+  const month =
+    String(
+      now.getMonth() + 1
+    ).padStart(2, "0");
+
+  const day =
+    String(
+      now.getDate()
+    ).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+
+/* --------------------------------
+   화면에 날짜 표시
+-------------------------------- */
+
+function showToday() {
+
+  const now = new Date();
+
+  const year =
+    now.getFullYear();
+
+  const month =
+    now.getMonth() + 1;
+
+  const day =
+    now.getDate();
+
+  document.getElementById(
+    "today"
+  ).textContent =
+    `${year}년 ${month}월 ${day}일`;
+}
+
+
+/* --------------------------------
+   명언을 화면에 표시
+-------------------------------- */
+
+function showQuote(data) {
+
+  document.getElementById(
+    "category"
+  ).textContent =
+    data.category;
+
+
+  document.getElementById(
+    "quote"
+  ).textContent =
+    "“" + data.text + "”";
+
+
+  document.getElementById(
+    "author"
+  ).textContent =
+    "— " + data.author;
+}
+
+
+/* --------------------------------
+   오늘 뽑은 명언 확인
+-------------------------------- */
+
+function checkTodayQuote() {
+
+  const saved =
+    localStorage.getItem(
+      STORAGE_KEY
+    );
+
+
+  if (!saved) {
+
+    return;
+
+  }
+
+
+  try {
+
+    const data =
+      JSON.parse(saved);
+
+
+    /*
+      저장된 날짜가 오늘인지 확인
+    */
+
+    if (
+      data.date === getToday()
+    ) {
+
+      showQuote(data);
+
+
+      document.getElementById(
+        "drawButton"
+      ).disabled = true;
+
+
+      document.getElementById(
+        "drawButton"
+      ).textContent =
+        "오늘의 명언을 뽑았습니다";
+
+
+      document.getElementById(
+        "message"
+      ).textContent =
+        "오늘의 명언은 이미 뽑으셨어요. 내일 다시 만나요 🌿";
+
+    }
+
+  }
+
+  catch (error) {
+
+    localStorage.removeItem(
+      STORAGE_KEY
+    );
+
+  }
+
+}
+
+
+/* --------------------------------
+   명언 뽑기
+-------------------------------- */
 
 function drawQuote() {
 
-  const randomIndex =
-    Math.floor(Math.random() * quotes.length);
+  /*
+    혹시 오늘 이미 뽑았다면
+    다시 뽑지 못하게 함
+  */
 
-  currentQuote = quotes[randomIndex];
-
-  document.getElementById("category").textContent =
-    currentQuote.category;
-
-  document.getElementById("quote").textContent =
-    "“" + currentQuote.text + "”";
-
-  document.getElementById("author").textContent =
-    "— " + currentQuote.author;
-
-  document.getElementById("message").textContent =
-    "";
-
-}
-
-
-async function saveQuote() {
-
-  if (!currentQuote) {
-
-    document.getElementById("message").textContent =
-      "먼저 명언을 하나 뽑아주세요.";
-
-    return;
-  }
-
-  const canvas =
-    document.createElement("canvas");
-
-  const width = 1080;
-  const height = 1350;
-
-  canvas.width = width;
-  canvas.height = height;
-
-  const ctx = canvas.getContext("2d");
-
-  ctx.fillStyle = "#fffdf7";
-  ctx.fillRect(0, 0, width, height);
-
-  ctx.fillStyle = "#58745a";
-  ctx.font = "bold 42px Arial";
-  ctx.textAlign = "center";
-
-  ctx.fillText(
-    currentQuote.category,
-    width / 2,
-    250
-  );
-
-  ctx.fillStyle = "#333";
-
-  ctx.font = "bold 58px Arial";
-
-  const words =
-    currentQuote.text.split("");
-
-  let lines = [];
-  let line = "";
-
-  for (let char of words) {
-
-    const testLine =
-      line + char;
-
-    const measurement =
-      ctx.measureText(testLine);
-
-    if (measurement.width > 850) {
-
-      lines.push(line);
-      line = char;
-
-    } else {
-
-      line = testLine;
-
-    }
-
-  }
-
-  if (line) {
-    lines.push(line);
-  }
-
-  let startY =
-    520 - ((lines.length - 1) * 35);
-
-  lines.forEach(function(lineText) {
-
-    ctx.fillText(
-      lineText,
-      width / 2,
-      startY
+  const saved =
+    localStorage.getItem(
+      STORAGE_KEY
     );
 
-    startY += 100;
 
-  });
+  if (saved) {
 
-  ctx.font = "32px Arial";
-  ctx.fillStyle = "#888";
+    try {
 
-  ctx.fillText(
-    "— " + currentQuote.author,
-    width / 2,
-    850
-  );
+      const data =
+        JSON.parse(saved);
 
-  ctx.font = "26px Arial";
-  ctx.fillStyle = "#aaa";
 
-  ctx.fillText(
-    "오늘의 명언 뽑기",
-    width / 2,
-    1150
-  );
+      if (
+        data.date === getToday()
+      ) {
 
-  canvas.toBlob(function(blob) {
+        return;
 
-    if (!blob) {
+      }
 
-      document.getElementById("message").textContent =
-        "이미지를 만들 수 없습니다.";
-
-      return;
     }
 
-    const url =
-      URL.createObjectURL(blob);
+    catch (error) {
 
-    const link =
-      document.createElement("a");
+      localStorage.removeItem(
+        STORAGE_KEY
+      );
 
-    link.href = url;
-    link.download = "오늘의명언.png";
+    }
 
-    document.body.appendChild(link);
+  }
 
-    link.click();
 
-    document.body.removeChild(link);
+  /*
+    랜덤 명언 선택
+  */
 
-    setTimeout(function() {
+  const randomIndex =
+    Math.floor(
+      Math.random() *
+      quotes.length
+    );
 
-      URL.revokeObjectURL(url);
 
-    }, 1000);
+  const quote =
+    quotes[randomIndex];
 
-    document.getElementById("message").textContent =
-      "명언 이미지가 저장되었습니다.";
 
-  }, "image/png");
+  /*
+    오늘 날짜와 함께 저장
+  */
+
+  const result = {
+
+    date:
+      getToday(),
+
+    text:
+      quote.text,
+
+    author:
+      quote.author,
+
+    category:
+      quote.category
+
+  };
+
+
+  localStorage.setItem(
+
+    STORAGE_KEY,
+
+    JSON.stringify(result)
+
+  );
+
+
+  /*
+    화면 표시
+  */
+
+  showQuote(result);
+
+
+  /*
+    버튼 잠금
+  */
+
+  document.getElementById(
+    "drawButton"
+  ).disabled = true;
+
+
+  document.getElementById(
+    "drawButton"
+  ).textContent =
+    "오늘의 명언을 뽑았습니다";
+
+
+  document.getElementById(
+    "message"
+  ).textContent =
+    "오늘의 명언은 내일 다시 뽑을 수 있어요 🌿";
 
 }
+
+
+/* --------------------------------
+   페이지 시작
+-------------------------------- */
+
+showToday();
+
+checkTodayQuote();
+
 
 </script>
 
