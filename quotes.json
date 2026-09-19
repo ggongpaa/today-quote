@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "text": "천 리의 길도 한 걸음에서 시작된다.",
+    "author": "노자",
+    "work": "도덕경",
+    "sourceRef": "64장",
+    "category": "새로운 시작",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 2,
+    "text": "만족할 줄 아는 사람은 부유하다.",
+    "author": "노자",
+    "work": "도덕경",
+    "sourceRef": "33장",
+    "category": "행복",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 3,
+    "text": "부드러운 것이 굳센 것을 이긴다.",
+    "author": "노자",
+    "work": "도덕경",
+    "sourceRef": "78장",
+    "category": "용기",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 4,
+    "text": "자신을 다스리는 것이 가장 큰 승리다.",
+    "author": "노자",
+    "work": "도덕경",
+    "sourceRef": "33장의 의미를 바탕으로 한 의역",
+    "category": "자기 자신",
+    "translationType": "자체 의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 5,
+    "text": "배우고 때때로 익히면 또한 기쁘지 아니한가.",
+    "author": "공자",
+    "work": "논어",
+    "sourceRef": "학이편 1:1",
+    "category": "배움",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 6,
+    "text": "자신이 원하지 않는 것을 남에게도 행하지 말라.",
+    "author": "공자",
+    "work": "논어",
+    "sourceRef": "위령공편 15:24",
+    "category": "인간관계",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 7,
+    "text": "배우기만 하고 생각하지 않으면 어둡고, 생각만 하고 배우지 않으면 위태롭다.",
+    "author": "공자",
+    "work": "논어",
+    "sourceRef": "위정편 2:15",
+    "category": "배움",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 8,
+    "text": "남이 나를 알아주지 않는 것을 걱정하지 말고, 내가 남을 알아보지 못하는 것을 걱정하라.",
+    "author": "공자",
+    "work": "논어",
+    "sourceRef": "학이편 1:16",
+    "category": "마음의 평온",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 9,
+    "text": "군자는 자신에게서 찾고, 소인은 남에게서 찾는다.",
+    "author": "공자",
+    "work": "논어",
+    "sourceRef": "위령공편 15:21",
+    "category": "자기 자신",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 10,
+    "text": "실수하고도 고치지 않는 것이 진짜 실수다.",
+    "author": "공자",
+    "work": "논어",
+    "sourceRef": "위령공편 15:30",
+    "category": "성장",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 11,
+    "text": "사람을 괴롭히는 것은 사건 자체가 아니라 그 사건에 대한 판단이다.",
+    "author": "에픽테토스",
+    "work": "엥케이리디온",
+    "sourceRef": "5장",
+    "category": "마음의 평온",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 12,
+    "text": "우리에게 달린 것과 우리에게 달리지 않은 것을 구별하라.",
+    "author": "에픽테토스",
+    "work": "엥케이리디온",
+    "sourceRef": "1장",
+    "category": "마음의 평온",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 13,
+    "text": "인생의 행복은 생각의 질에 달려 있다.",
+    "author": "마르쿠스 아우렐리우스",
+    "work": "명상록",
+    "sourceRef": "5권의 사상을 바탕으로 한 의역",
+    "category": "행복",
+    "translationType": "자체 의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 14,
+    "text": "지금 네가 할 수 있는 일에 온전히 집중하라.",
+    "author": "마르쿠스 아우렐리우스",
+    "work": "명상록",
+    "sourceRef": "현재와 행동에 관한 사상을 바탕으로 한 의역",
+    "category": "오늘 하루",
+    "translationType": "자체 의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 15,
+    "text": "우리가 시간이 부족한 것이 아니라 많은 시간을 흘려보내는 것이다.",
+    "author": "세네카",
+    "work": "인생의 짧음에 관하여",
+    "sourceRef": "1장",
+    "category": "오늘 하루",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 16,
+    "text": "어려움은 용기를 시험하고 키운다.",
+    "author": "세네카",
+    "work": "섭리에 관하여",
+    "sourceRef": "역경에 관한 논의",
+    "category": "힘이 필요할 때",
+    "translationType": "자체 의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 17,
+    "text": "죽음이 우리에게 있을 때 우리는 없고, 우리가 있을 때 죽음은 없다.",
+    "author": "에피쿠로스",
+    "work": "메노이케우스에게 보내는 편지",
+    "sourceRef": "Letter to Menoeceus",
+    "category": "삶",
+    "translationType": "자체 번역·의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 18,
+    "text": "행복은 외부의 것보다 마음의 상태와 더 깊이 관련된다.",
+    "author": "에피쿠로스",
+    "work": "메노이케우스에게 보내는 편지",
+    "sourceRef": "Letter to Menoeceus의 행복에 관한 논의",
+    "category": "행복",
+    "translationType": "자체 의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 19,
+    "text": "우리는 반복하는 행동을 통해 어떤 사람이 되어 간다.",
+    "author": "아리스토텔레스",
+    "work": "니코마코스 윤리학",
+    "sourceRef": "2권",
+    "category": "성장",
+    "translationType": "자체 의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  },
+  {
+    "id": 20,
+    "text": "용기는 두려움 속에서도 올바르게 행동하는 것이다.",
+    "author": "아리스토텔레스",
+    "work": "니코마코스 윤리학",
+    "sourceRef": "3권의 용기에 관한 논의",
+    "category": "용기",
+    "translationType": "자체 의역",
+    "rightsStatus": "고전 원전 퍼블릭 도메인"
+  }
+]
