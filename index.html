@@ -3,454 +3,551 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="theme-color" content="#526653">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icon-192.png">
   <title>오늘의 명언 뽑기</title>
 
-  <!-- PWA 관련 설정 -->
-  <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#71866d">
-  <link rel="apple-touch-icon" href="./icon-192.png">
-
   <style>
-    * {
-      box-sizing: border-box;
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
-      background: #f5f1e8;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Noto Sans KR",
-        "Malgun Gothic",
-        sans-serif;
-
+      background: #f6f1e5;
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Malgun Gothic", sans-serif;
+      color: #39443b;
       display: flex;
       justify-content: center;
       align-items: center;
-
-      color: #3d463d;
+      padding: 18px 12px 28px;
+      overflow-x: hidden;
     }
 
     .container {
-      width: 90%;
-      max-width: 500px;
+      width: 100%;
+      max-width: 620px;
       text-align: center;
     }
 
     .title {
-      font-size: 30px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: #425443;
+      font-family: "Noto Serif KR", "Batang", serif;
+      font-size: clamp(25px, 7vw, 34px);
+      font-weight: 600;
+      letter-spacing: -1.2px;
+      color: #405143;
+      margin: 0 0 7px;
     }
 
     .subtitle {
-      font-size: 15px;
-      color: #777;
-      margin-bottom: 25px;
+      font-family: "Noto Serif KR", "Batang", serif;
+      font-size: clamp(12px, 3.5vw, 15px);
+      color: #777b74;
+      line-height: 1.7;
+      margin-bottom: 5px;
     }
 
     .date {
-      font-size: 14px;
-      color: #7b8178;
-      margin-bottom: 18px;
+      font-size: 12px;
+      color: #858a82;
+      margin-bottom: 13px;
     }
 
-    .card {
-      background: #fffdf8;
-      border-radius: 22px;
-      padding: 40px 28px;
-      box-shadow: 0 8px 25px rgba(70, 70, 50, 0.10);
-      min-height: 280px;
+    /* =========================================
+       타로 선택 이미지 영역
+       ========================================= */
+    .tarot-stage {
+      position: relative;
+      width: 100%;
+      margin: 0 auto;
+      border-radius: 18px;
+      overflow: hidden;
+      filter: drop-shadow(0 16px 22px rgba(57,68,59,.16));
+      user-select: none;
+    }
 
+    .tarot-scene {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .choice {
+      position: absolute;
+      top: 27.8%;
+      width: 22.7%;
+      height: 49.0%;
+      z-index: 20;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 5%;
+      transition: transform .45s ease, opacity .45s ease, filter .45s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .choice:focus-visible {
+      outline: 3px solid rgba(164, 137, 69, .75);
+      outline-offset: 5px;
+    }
+
+    .choice-1 { left: 12.5%; }
+    .choice-2 { left: 38.7%; }
+    .choice-3 { left: 64.9%; }
+
+    .choice:hover {
+      transform: translateY(-7px) scale(1.015);
+      filter: drop-shadow(0 10px 10px rgba(72,78,52,.18));
+    }
+
+    .tarot-stage.choosing .choice:not(.selected) {
+      opacity: .32;
+      transform: scale(.97);
+    }
+
+    .tarot-stage.choosing .choice.selected {
+      transform: translateY(-9px) scale(1.035);
+      filter: drop-shadow(0 14px 16px rgba(72,78,52,.3));
+    }
+
+    .tarot-stage.hidden {
+      animation: sceneOut .55s ease forwards;
+      pointer-events: none;
+    }
+
+    @keyframes sceneOut {
+      to { opacity: 0; transform: scale(.96) translateY(-8px); }
+    }
+
+    /* =========================================
+       명언 카드
+       ========================================= */
+    .quote-area {
+      display: none;
+      perspective: 1400px;
+      margin-top: 4px;
+    }
+
+    .quote-area.show {
+      display: block;
+      animation: quoteAreaIn .65s ease both;
+    }
+
+    @keyframes quoteAreaIn {
+      from { opacity: 0; transform: translateY(18px) scale(.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .quote-card {
+      width: min(66vw, 300px);
+      aspect-ratio: .68;
+      max-height: 68vh;
+      margin: 0 auto 15px;
+      position: relative;
+      transform-style: preserve-3d;
+      filter: drop-shadow(0 18px 22px rgba(57,68,59,.18));
+    }
+
+    .quote-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 23px;
+      overflow: hidden;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .quote-front {
+      background: #405b47;
+      border: 7px solid rgba(255,255,255,.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .quote-front::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(245,238,215,.48);
+      border-radius: 17px;
+    }
+
+    .mini-tarot {
+      width: 82%;
+      height: 88%;
+      border: 1px solid rgba(245,238,215,.6);
+      border-radius: 15px;
+      position: relative;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      color: #f7f0d8;
+    }
+
+    .mini-tarot .symbol {
+      font-size: 54px;
+      line-height: 1;
+      margin-bottom: 22px;
+    }
+
+    .mini-tarot .small {
+      font-size: 11px;
+      letter-spacing: 2px;
+      opacity: .82;
+    }
+
+    .quote-back {
+      transform: rotateY(180deg);
+      background: linear-gradient(145deg, #fffdf8, #f7f2e7);
+      border: 1px solid #ded8ca;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 25px;
+      text-align: center;
+    }
+
+    .quote-back::before {
+      content: "";
+      position: absolute;
+      inset: 13px;
+      border: 1px solid #b7bcae;
+      border-radius: 17px;
+    }
+
+    #result {
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .quote-mark {
+      font-family: Georgia, serif;
+      font-size: 52px;
+      line-height: .6;
+      color: #71866d;
+      margin-bottom: 17px;
     }
 
     .message {
-      font-size: 20px;
+      font-size: clamp(15px, 4.2vw, 18px);
       line-height: 1.8;
       font-weight: 500;
+      color: #39443b;
       word-break: keep-all;
-      margin-bottom: 25px;
+      margin-bottom: 18px;
     }
 
     .author {
-      font-size: 15px;
-      color: #777;
-      margin-bottom: 8px;
+      font-size: 12px;
+      color: #777b74;
+      margin-bottom: 12px;
     }
 
     .category {
       display: inline-block;
-      padding: 5px 12px;
+      padding: 6px 13px;
       border-radius: 20px;
-      background: #e8eee5;
+      background: #e5ebe1;
       color: #5d6c5a;
-      font-size: 12px;
+      font-size: 11px;
     }
 
-    button {
-      margin-top: 25px;
-      width: 100%;
-      max-width: 300px;
-
-      padding: 15px 20px;
-
-      border: none;
-      border-radius: 30px;
-
-      background: #71866d;
-      color: white;
-
-      font-size: 17px;
-      font-weight: 600;
-
-      cursor: pointer;
+    .quote-card.reveal {
+      animation: cardReveal .8s cubic-bezier(.2,.75,.25,1) both;
     }
 
-    button:hover {
-      opacity: 0.9;
-    }
-
-    button:disabled {
-      background: #b8bdb5;
-      cursor: default;
+    @keyframes cardReveal {
+      from { opacity: 0; transform: rotateY(-20deg) translateY(18px) scale(.94); }
+      to { opacity: 1; transform: rotateY(0) translateY(0) scale(1); }
     }
 
     .notice {
-      margin-top: 16px;
+      min-height: 42px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #858a82;
+      padding: 2px 10px;
+    }
+
+    .loading, .error {
       font-size: 13px;
       color: #888;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
-    .loading {
-      color: #888;
-      font-size: 15px;
+    .error { color: #a05b5b; }
+
+    .again {
+      display: none;
+      margin: 3px auto 0;
+      border: 1px solid #aeb9a7;
+      background: rgba(255,255,255,.62);
+      color: #596957;
+      border-radius: 24px;
+      padding: 9px 18px;
+      font-size: 12px;
+      cursor: pointer;
     }
 
-    .error {
-      color: #a05b5b;
-      font-size: 14px;
-      line-height: 1.6;
+    .again.show { display: inline-block; }
+
+    @media (max-width: 430px) {
+      body { padding-top: 12px; }
+      .title { margin-bottom: 4px; }
+      .date { margin-bottom: 8px; }
+      .tarot-stage { border-radius: 12px; }
+      .quote-card { width: min(69vw, 290px); }
     }
   </style>
 </head>
 
 <body>
-
-<div class="container">
-
-  <div class="title">오늘의 명언 뽑기</div>
-
-  <div class="subtitle">
-    오늘의 마음에 필요한 한마디를 뽑아보세요.
-  </div>
-
-  <div class="date" id="today"></div>
-
-  <div class="card">
-
-    <div id="result">
-      <div class="loading">
-        명언을 불러오는 중이에요...
-      </div>
-    </div>
-
-  </div>
-
-  <button id="drawButton" disabled>
-    오늘의 명언 뽑기
-  </button>
-
-  <div class="notice" id="notice">
-    하루에 한 번만 뽑을 수 있어요.
-  </div>
-
-</div>
-
-
-<script>
-
-  // ==========================================
-  // 기본 설정
-  // ==========================================
-
-  const STORAGE_KEY = "today_quote_result";
-
-  const todayElement = document.getElementById("today");
-  const resultElement = document.getElementById("result");
-  const drawButton = document.getElementById("drawButton");
-  const noticeElement = document.getElementById("notice");
-
-  let quotes = [];
-
-
-  // ==========================================
-  // 오늘 날짜
-  // ==========================================
-
-  function getToday() {
-
-    const now = new Date();
-
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-
-    return ${year}-${month}-${day};
-  }
-
-
-  function displayToday() {
-
-    const today = getToday();
-
-    const [year, month, day] = today.split("-");
-
-    todayElement.textContent =
-      ${year}년 ${Number(month)}월 ${Number(day)}일;
-
-  }
-
-
-  // ==========================================
-  // 명언 표시
-  // ==========================================
-
-  function showQuote(quote) {
-
-    resultElement.innerHTML = 
-
-      <div class="message">
-        “${quote.text}”
-      </div>
-
-      <div class="author">
-        — ${quote.author}
-      </div>
-
-      ${
-        quote.category
-        ? <div class="category">${quote.category}</div>
-        : ""
-      }
-
-    ;
-
-  }
-
-
-  // ==========================================
-  // 이미 오늘 뽑았는지 확인
-  // ==========================================
-
-  function checkTodayResult() {
-
-    const saved = localStorage.getItem(STORAGE_KEY);
-
-    if (!saved) {
-      return false;
-    }
-
-    try {
-
-      const data = JSON.parse(saved);
-
-      if (data.date === getToday()) {
-
-        showQuote(data.quote);
-
-        drawButton.disabled = true;
-        drawButton.textContent = "오늘의 명언을 뽑았습니다";
-
-        noticeElement.textContent =
-          "오늘은 이미 명언을 뽑았어요. 내일 다시 만나요.";
-
-        return true;
-      }
-
-    } catch (error) {
-
-      console.log("저장된 데이터 확인 오류:", error);
-
-    }
-
-    return false;
-  }
-
-
-  // ==========================================
-  // 명언 뽑기
-  // ==========================================
-
-  function drawQuote() {
-
-    if (!quotes || quotes.length === 0) {
-
-      resultElement.innerHTML = 
-        <div class="error">
-          명언 데이터를 불러오지 못했어요.
-        </div>
-      ;
-
-      return;
-    }
-
-
-    // 혹시 오늘 이미 뽑았다면 다시 뽑지 않음
-    if (checkTodayResult()) {
-      return;
-    }
-
-
-    // 랜덤 명언 선택
-    const randomIndex =
-      Math.floor(Math.random() * quotes.length);
-
-    const selectedQuote = quotes[randomIndex];
-
-
-    // 화면에 표시
-    showQuote(selectedQuote);
-
-
-    // 오늘 뽑은 명언 저장
-    const saveData = {
-
-      date: getToday(),
-
-      quote: selectedQuote
-
-    };
-
-
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(saveData)
-    );
-
-
-    // 버튼 비활성화
-    drawButton.disabled = true;
-
-    drawButton.textContent =
-      "오늘의 명언을 뽑았습니다";
-
-
-    noticeElement.textContent =
-      "오늘은 여기까지예요. 내일 새로운 명언을 뽑아보세요.";
-
-  }
-
-
-  // ==========================================
-  // quotes.json 불러오기
-  // ==========================================
-
-  async function loadQuotes() {
-
-    try {
-
-      const response =
-        await fetch("./quotes.json?ver=1");
-
-      if (!response.ok) {
-
-        throw new Error(
-          HTTP 오류: ${response.status}
-        );
-
-      }
-
-
-      quotes = await response.json();
-
-
-      // 데이터가 배열인지 확인
-      if (!Array.isArray(quotes)) {
-
-        throw new Error(
-          "quotes.json 형식이 올바르지 않습니다."
-        );
-
-      }
-
-
-      console.log(
-        명언 ${quotes.length}개를 불러왔습니다.
-      );
-
-
-      // 이미 오늘 뽑았는지 확인
-      const alreadyDrawn =
-        checkTodayResult();
-
-
-      if (!alreadyDrawn) {
-
-        drawButton.disabled = false;
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        "명언 데이터 불러오기 실패:",
-        error
-      );
-
-
-      resultElement.innerHTML = 
-
-        <div class="error">
-
-          명언 데이터를 불러오지 못했어요.<br>
-          잠시 후 다시 시도해주세요.
-
+  <main class="container">
+    <div class="title">오늘의 명언을 뽑아보세요</div>
+    <div class="subtitle">지금, 당신의 마음에 닿는 한 마디를 선택해보세요.</div>
+    <div class="date" id="today"></div>
+
+    <!-- 생성한 타로 선택 이미지 -->
+    <section class="tarot-stage" id="tarotStage" aria-label="오늘의 타로 카드 선택">
+      <img
+        class="tarot-scene"
+        src="./tarot-selection.png"
+        alt="세 장의 타로 카드 중 하나를 선택하세요"
+      >
+
+      <button class="choice choice-1" data-choice="1" aria-label="왼쪽 카드 선택"></button>
+      <button class="choice choice-2" data-choice="2" aria-label="가운데 카드 선택"></button>
+      <button class="choice choice-3" data-choice="3" aria-label="오른쪽 카드 선택"></button>
+    </section>
+
+    <!-- 선택 후 명언 카드 -->
+    <section class="quote-area" id="quoteArea">
+      <div class="quote-card reveal" id="quoteCard">
+        <div class="quote-face quote-front">
+          <div class="mini-tarot">
+            <div class="symbol">☾ ✦ ☽</div>
+            <div class="small">YOUR MESSAGE FOR TODAY</div>
+          </div>
         </div>
 
-      ;
+        <div class="quote-face quote-back">
+          <div id="result">
+            <div class="loading">명언을 불러오는 중이에요...</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      drawButton.disabled = true;
+    <div class="notice" id="notice">세 장 중 마음이 끌리는 카드 하나를 선택해보세요.</div>
+    <button class="again" id="againButton" type="button">오늘의 카드 다시 보기</button>
+  </main>
 
-      noticeElement.textContent =
-        "quotes.json 파일을 확인해주세요.";
+  <script>
+    const STORAGE_KEY = "today_quote_result";
 
+    const todayElement = document.getElementById("today");
+    const tarotStage = document.getElementById("tarotStage");
+    const quoteArea = document.getElementById("quoteArea");
+    const quoteCard = document.getElementById("quoteCard");
+    const resultElement = document.getElementById("result");
+    const noticeElement = document.getElementById("notice");
+    const againButton = document.getElementById("againButton");
+    const choices = [...document.querySelectorAll(".choice")];
+
+    let quotes = [];
+    let isDrawing = false;
+    let quotesLoaded = false;
+
+    function getToday() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
     }
 
-  }
+    function displayToday() {
+      const [year, month, day] = getToday().split("-");
+      todayElement.textContent = `${year}년 ${Number(month)}월 ${Number(day)}일`;
+    }
 
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
 
-  // ==========================================
-  // 시작
-  // ==========================================
+    function showQuote(quote) {
+      resultElement.innerHTML = `
+        <div class="quote-mark">“</div>
+        <div class="message">${escapeHtml(quote.text)}</div>
+        <div class="author">— ${escapeHtml(quote.author)}</div>
+        ${quote.category ? `<div class="category">${escapeHtml(quote.category)}</div>` : ""}
+      `;
+    }
 
-  displayToday();
+    function getSavedResult() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return null;
 
-  drawButton.addEventListener(
-    "click",
-    drawQuote
-  );
+      try {
+        const data = JSON.parse(saved);
+        return data.date === getToday() ? data.quote : null;
+      } catch (error) {
+        console.log("저장된 데이터 확인 오류:", error);
+        return null;
+      }
+    }
 
-  loadQuotes();
+    function showSavedQuote(savedQuote) {
+      showQuote(savedQuote);
+      tarotStage.style.display = "none";
+      quoteArea.classList.add("show");
+      noticeElement.textContent = "오늘의 한마디를 마음에 담아보세요.";
+    }
 
-  // 서비스 워커 등록
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then((reg) => console.log('Service Worker Registered:', reg.scope))
-        .catch((err) => console.error('Service Worker Registration Failed:', err));
+    function drawQuote(choice) {
+      if (isDrawing || !choice) return;
+
+      const savedQuote = getSavedResult();
+      if (savedQuote) {
+        showSavedQuote(savedQuote);
+        return;
+      }
+
+      // 클릭 즉시 선택 상태를 보여준다.
+      isDrawing = true;
+      tarotStage.classList.add("choosing");
+      choices.forEach(button => {
+        button.disabled = true;
+        button.classList.toggle("selected", button === choice);
+      });
+
+      noticeElement.textContent = "선택한 카드의 메시지를 준비하고 있어요...";
+
+      // quotes.json이 아직 로딩 중이면 로딩이 끝난 뒤 진행한다.
+      waitForQuotesAndReveal(choice);
+    }
+
+    function waitForQuotesAndReveal(choice) {
+      if (quotesLoaded && quotes.length > 0) {
+        revealQuote(choice);
+        return;
+      }
+
+      if (quotesLoaded && quotes.length === 0) {
+        showLoadError();
+        return;
+      }
+
+      setTimeout(() => waitForQuotesAndReveal(choice), 100);
+    }
+
+    function revealQuote(choice) {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      const selectedQuote = quotes[randomIndex];
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          date: getToday(),
+          choice: choice.dataset.choice,
+          quote: selectedQuote
+        })
+      );
+
+      showQuote(selectedQuote);
+      tarotStage.classList.add("hidden");
+
+      setTimeout(() => {
+        tarotStage.style.display = "none";
+        quoteArea.classList.add("show");
+        noticeElement.textContent = "오늘의 한마디를 마음에 담아보세요.";
+        isDrawing = false;
+      }, 500);
+    }
+
+    function showLoadError() {
+      isDrawing = false;
+      choices.forEach(button => {
+        button.disabled = false;
+      });
+      tarotStage.classList.remove("choosing");
+      noticeElement.textContent = "명언 데이터를 불러오지 못했어요. quotes.json 파일을 확인해주세요.";
+    }
+
+    async function loadQuotes() {
+      try {
+        const response = await fetch("./quotes.json?ver=4", { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP 오류: ${response.status}`);
+
+        quotes = await response.json();
+        if (!Array.isArray(quotes)) {
+          throw new Error("quotes.json 형식이 올바르지 않습니다.");
+        }
+
+        quotesLoaded = true;
+        console.log(`명언 ${quotes.length}개를 불러왔습니다.`);
+
+        const savedQuote = getSavedResult();
+        if (savedQuote) {
+          showSavedQuote(savedQuote);
+        }
+      } catch (error) {
+        quotesLoaded = true;
+        console.error("명언 데이터 불러오기 실패:", error);
+        resultElement.innerHTML = `
+          <div class="error">
+            명언 데이터를 불러오지 못했어요.<br>
+            잠시 후 다시 시도해주세요.
+          </div>
+        `;
+        noticeElement.textContent = "quotes.json 파일을 확인해주세요.";
+      }
+    }
+
+    choices.forEach(choice => {
+      choice.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        drawQuote(this);
+      });
     });
-  }
 
-</script>
+    againButton.addEventListener("click", () => {
+      // 현재 버전에서는 하루 한 장 원칙을 유지합니다.
+      // 버튼은 필요 시 이후 '다시 뽑기' 기능으로 확장할 수 있습니다.
+      const saved = getSavedResult();
+      if (saved) showSavedQuote(saved);
+    });
 
+    displayToday();
+    loadQuotes();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js")
+          .then(reg => console.log("Service Worker Registered:", reg.scope))
+          .catch(err => console.error("Service Worker Registration Failed:", err));
+      });
+    }
+  </script>
 </body>
 </html>
