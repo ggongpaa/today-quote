@@ -6,12 +6,13 @@
 
   <title>오늘의 명언 뽑기</title>
 
-  <!-- PWA 관련 설정 -->
+  <!-- PWA -->
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#71866d">
   <link rel="apple-touch-icon" href="./icon-192.png">
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -19,7 +20,9 @@
     body {
       margin: 0;
       min-height: 100vh;
+
       background: #f5f1e8;
+
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -27,169 +30,590 @@
         "Malgun Gothic",
         sans-serif;
 
+      color: #3d463d;
+
       display: flex;
       justify-content: center;
       align-items: center;
 
-      color: #3d463d;
+      padding: 30px 15px;
     }
 
+
+    /* ==========================================
+       전체 컨테이너
+       ========================================== */
+
     .container {
-      width: 90%;
+      width: 100%;
       max-width: 500px;
+
       text-align: center;
     }
+
+
+    /* ==========================================
+       제목
+       ========================================== */
 
     .title {
       font-size: 30px;
       font-weight: 700;
+
       margin-bottom: 8px;
+
       color: #425443;
     }
 
+
     .subtitle {
       font-size: 15px;
+
       color: #777;
-      margin-bottom: 25px;
+
+      margin-bottom: 18px;
+
+      line-height: 1.6;
     }
+
 
     .date {
       font-size: 14px;
+
       color: #7b8178;
-      margin-bottom: 18px;
-    }
 
-    .card {
-      background: #fffdf8;
-      border-radius: 22px;
-      padding: 40px 28px;
-      box-shadow: 0 8px 25px rgba(70, 70, 50, 0.10);
-      min-height: 280px;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .message {
-      font-size: 20px;
-      line-height: 1.8;
-      font-weight: 500;
-      word-break: keep-all;
       margin-bottom: 25px;
     }
 
-    .author {
-      font-size: 15px;
-      color: #777;
-      margin-bottom: 8px;
-    }
 
-    .category {
-      display: inline-block;
-      padding: 5px 12px;
-      border-radius: 20px;
-      background: #e8eee5;
-      color: #5d6c5a;
-      font-size: 12px;
-    }
+    /* ==========================================
+       카드 영역
+       ========================================== */
 
-    button {
-      margin-top: 25px;
+    .card-wrapper {
+
       width: 100%;
-      max-width: 300px;
 
-      padding: 15px 20px;
+      display: flex;
+      justify-content: center;
 
-      border: none;
-      border-radius: 30px;
+      perspective: 1200px;
 
-      background: #71866d;
-      color: white;
+      margin-bottom: 20px;
+    }
 
-      font-size: 17px;
-      font-weight: 600;
+
+    /* ==========================================
+       실제 뒤집히는 카드
+       ========================================== */
+
+    .quote-card {
+
+      width: min(82vw, 330px);
+
+      aspect-ratio: 0.68;
+
+      position: relative;
 
       cursor: pointer;
+
+      transform-style: preserve-3d;
+
+      transition:
+        transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+
+      -webkit-tap-highlight-color: transparent;
+
+      user-select: none;
     }
 
-    button:hover {
+
+    /* 카드 뒤집힘 */
+
+    .quote-card.flipped {
+
+      transform: rotateY(180deg);
+
+    }
+
+
+    /* ==========================================
+       카드 앞 / 뒤 공통
+       ========================================== */
+
+    .card-face {
+
+      position: absolute;
+
+      width: 100%;
+      height: 100%;
+
+      top: 0;
+      left: 0;
+
+      border-radius: 24px;
+
+      overflow: hidden;
+
+      backface-visibility: hidden;
+
+      -webkit-backface-visibility: hidden;
+
+      box-shadow:
+        0 15px 35px rgba(70, 70, 50, 0.16);
+    }
+
+
+    /* ==========================================
+       카드 앞면
+       ========================================== */
+
+    .card-front {
+
+      background:
+        radial-gradient(
+          circle at center,
+          #82977d 0%,
+          #71866d 45%,
+          #5e735b 100%
+        );
+
+      color: white;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+      align-items: center;
+
+      padding: 30px;
+
+      border: 8px solid rgba(255,255,255,0.18);
+    }
+
+
+    /* 카드 안쪽 장식 */
+
+    .card-front::before {
+
+      content: "";
+
+      position: absolute;
+
+      inset: 14px;
+
+      border: 1px solid rgba(255,255,255,0.35);
+
+      border-radius: 18px;
+
+      pointer-events: none;
+    }
+
+
+    .star {
+
+      font-size: 28px;
+
+      margin-bottom: 25px;
+
       opacity: 0.9;
     }
 
-    button:disabled {
-      background: #b8bdb5;
-      cursor: default;
+
+    .front-title {
+
+      font-size: 28px;
+
+      font-weight: 700;
+
+      letter-spacing: 2px;
+
+      margin-bottom: 14px;
     }
+
+
+    .front-subtitle {
+
+      font-size: 14px;
+
+      opacity: 0.9;
+
+      letter-spacing: 1px;
+    }
+
+
+    .tap-text {
+
+      position: absolute;
+
+      bottom: 30px;
+
+      font-size: 12px;
+
+      letter-spacing: 1px;
+
+      opacity: 0.75;
+    }
+
+
+    /* ==========================================
+       카드 뒷면 = 명언
+       ========================================== */
+
+    .card-back {
+
+      transform: rotateY(180deg);
+
+      background: #fffdf8;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+      align-items: center;
+
+      padding: 35px 28px;
+
+      text-align: center;
+
+      border: 1px solid #e6e0d5;
+    }
+
+
+    .quote-mark {
+
+      font-family: Georgia, serif;
+
+      font-size: 55px;
+
+      line-height: 0.7;
+
+      color: #71866d;
+
+      margin-bottom: 18px;
+    }
+
+
+    .message {
+
+      font-size: 19px;
+
+      line-height: 1.8;
+
+      font-weight: 500;
+
+      word-break: keep-all;
+
+      color: #3d463d;
+
+      margin-bottom: 22px;
+    }
+
+
+    .author {
+
+      font-size: 14px;
+
+      color: #777;
+
+      margin-bottom: 12px;
+    }
+
+
+    .category {
+
+      display: inline-block;
+
+      padding: 6px 13px;
+
+      border-radius: 20px;
+
+      background: #e8eee5;
+
+      color: #5d6c5a;
+
+      font-size: 12px;
+    }
+
+
+    /* ==========================================
+       안내 문구
+       ========================================== */
 
     .notice {
-      margin-top: 16px;
+
       font-size: 13px;
+
       color: #888;
-      line-height: 1.6;
+
+      line-height: 1.7;
+
+      min-height: 45px;
     }
 
+
     .loading {
+
       color: #888;
+
       font-size: 15px;
     }
 
+
     .error {
+
       color: #a05b5b;
+
       font-size: 14px;
+
       line-height: 1.6;
     }
+
+
+    /* ==========================================
+       카드 등장 애니메이션
+       ========================================== */
+
+    .quote-card.ready {
+
+      animation:
+        cardAppear 0.7s ease-out;
+    }
+
+
+    @keyframes cardAppear {
+
+      from {
+
+        opacity: 0;
+
+        transform:
+          translateY(20px)
+          scale(0.96);
+      }
+
+      to {
+
+        opacity: 1;
+
+        transform:
+          translateY(0)
+          scale(1);
+      }
+
+    }
+
+
+    /* ==========================================
+       클릭 유도용 살짝 움직임
+       ========================================== */
+
+    .quote-card:not(.flipped):not(.disabled) {
+
+      animation:
+        gentleFloat 2.8s ease-in-out infinite;
+    }
+
+
+    @keyframes gentleFloat {
+
+      0%, 100% {
+
+        transform:
+          translateY(0);
+      }
+
+      50% {
+
+        transform:
+          translateY(-6px);
+      }
+
+    }
+
+
+    /* 뒤집힌 후에는 애니메이션 제거 */
+
+    .quote-card.flipped {
+
+      animation: none;
+    }
+
+
+    /* ==========================================
+       이미 오늘 뽑은 경우
+       ========================================== */
+
+    .quote-card.disabled {
+
+      cursor: default;
+    }
+
+
+    /* ==========================================
+       모바일
+       ========================================== */
+
+    @media (max-width: 400px) {
+
+      .title {
+        font-size: 27px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+      }
+
+      .quote-card {
+        width: min(84vw, 310px);
+      }
+
+      .message {
+        font-size: 17px;
+      }
+
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-  <div class="title">오늘의 명언 뽑기</div>
+
+  <!-- 제목 -->
+
+  <div class="title">
+    오늘의 명언 뽑기
+  </div>
+
 
   <div class="subtitle">
     오늘의 마음에 필요한 한마디를 뽑아보세요.
   </div>
 
-  <div class="date" id="today"></div>
 
-  <div class="card">
+  <!-- 날짜 -->
 
-    <div id="result">
-      <div class="loading">
-        명언을 불러오는 중이에요...
+  <div
+    class="date"
+    id="today">
+  </div>
+
+
+  <!-- ========================================
+       카드
+       ======================================== -->
+
+  <div class="card-wrapper">
+
+    <div
+      class="quote-card"
+      id="quoteCard">
+
+
+      <!-- ====================================
+           카드 앞면
+           ==================================== -->
+
+      <div class="card-face card-front">
+
+        <div class="star">
+          ✦
+        </div>
+
+        <div class="front-title">
+          오늘의<br>
+          마음
+        </div>
+
+        <div class="front-subtitle">
+          한 장의 카드를 뽑아보세요
+        </div>
+
+        <div class="tap-text">
+          TAP TO DRAW
+        </div>
+
       </div>
+
+
+      <!-- ====================================
+           카드 뒷면
+           ==================================== -->
+
+      <div class="card-face card-back">
+
+        <div id="result">
+
+          <div class="loading">
+            명언을 불러오는 중이에요...
+          </div>
+
+        </div>
+
+      </div>
+
+
     </div>
 
   </div>
 
-  <button id="drawButton" disabled>
-    오늘의 명언 뽑기
-  </button>
 
-  <div class="notice" id="notice">
-    하루에 한 번만 뽑을 수 있어요.
+  <!-- 안내 -->
+
+  <div
+    class="notice"
+    id="notice">
+
+    카드를 눌러 오늘의 명언을 뽑아보세요.
+
   </div>
+
 
 </div>
 
 
+
 <script>
+
 
   // ==========================================
   // 기본 설정
   // ==========================================
 
-  const STORAGE_KEY = "today_quote_result";
+  const STORAGE_KEY =
+    "today_quote_result";
 
-  const todayElement = document.getElementById("today");
-  const resultElement = document.getElementById("result");
-  const drawButton = document.getElementById("drawButton");
-  const noticeElement = document.getElementById("notice");
+
+  const todayElement =
+    document.getElementById("today");
+
+
+  const resultElement =
+    document.getElementById("result");
+
+
+  const quoteCard =
+    document.getElementById("quoteCard");
+
+
+  const noticeElement =
+    document.getElementById("notice");
+
 
   let quotes = [];
+
+  let isDrawing = false;
+
 
 
   // ==========================================
@@ -200,24 +624,43 @@
 
     const now = new Date();
 
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
+    const year =
+      now.getFullYear();
+
+    const month =
+      String(
+        now.getMonth() + 1
+      ).padStart(2, "0");
+
+    const day =
+      String(
+        now.getDate()
+      ).padStart(2, "0");
+
 
     return `${year}-${month}-${day}`;
+
   }
+
 
 
   function displayToday() {
 
-    const today = getToday();
+    const today =
+      getToday();
 
-    const [year, month, day] = today.split("-");
+    const [
+      year,
+      month,
+      day
+    ] = today.split("-");
+
 
     todayElement.textContent =
       `${year}년 ${Number(month)}월 ${Number(day)}일`;
 
   }
+
 
 
   // ==========================================
@@ -228,8 +671,12 @@
 
     resultElement.innerHTML = `
 
+      <div class="quote-mark">
+        “
+      </div>
+
       <div class="message">
-        “${quote.text}”
+        ${quote.text}
       </div>
 
       <div class="author">
@@ -238,8 +685,12 @@
 
       ${
         quote.category
-        ? `<div class="category">${quote.category}</div>`
-        : ""
+        ?
+        `<div class="category">
+          ${quote.category}
+        </div>`
+        :
+        ""
       }
 
     `;
@@ -247,81 +698,127 @@
   }
 
 
+
   // ==========================================
-  // 이미 오늘 뽑았는지 확인
+  // 오늘 이미 뽑았는지 확인
   // ==========================================
 
-  function checkTodayResult() {
+  function getSavedResult() {
 
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved =
+      localStorage.getItem(
+        STORAGE_KEY
+      );
+
 
     if (!saved) {
-      return false;
+
+      return null;
+
     }
+
 
     try {
 
-      const data = JSON.parse(saved);
+      const data =
+        JSON.parse(saved);
 
-      if (data.date === getToday()) {
 
-        showQuote(data.quote);
+      if (
+        data.date ===
+        getToday()
+      ) {
 
-        drawButton.disabled = true;
-        drawButton.textContent = "오늘의 명언을 뽑았습니다";
+        return data.quote;
 
-        noticeElement.textContent =
-          "오늘은 이미 명언을 뽑았어요. 내일 다시 만나요.";
-
-        return true;
       }
 
     } catch (error) {
 
-      console.log("저장된 데이터 확인 오류:", error);
+      console.log(
+        "저장된 데이터 확인 오류:",
+        error
+      );
 
     }
 
-    return false;
+
+    return null;
+
   }
 
 
+
   // ==========================================
-  // 명언 뽑기
+  // 오늘의 명언 뽑기
   // ==========================================
 
   function drawQuote() {
 
-    if (!quotes || quotes.length === 0) {
 
-      resultElement.innerHTML = `
-        <div class="error">
-          명언 데이터를 불러오지 못했어요.
-        </div>
-      `;
+    if (isDrawing) {
 
       return;
+
     }
 
 
-    // 혹시 오늘 이미 뽑았다면 다시 뽑지 않음
-    if (checkTodayResult()) {
+    if (
+      !quotes ||
+      quotes.length === 0
+    ) {
+
       return;
+
     }
+
+
+    // 오늘 이미 뽑았다면 종료
+
+    const savedQuote =
+      getSavedResult();
+
+
+    if (savedQuote) {
+
+      showQuote(
+        savedQuote
+      );
+
+      quoteCard.classList.add(
+        "flipped"
+      );
+
+      quoteCard.classList.add(
+        "disabled"
+      );
+
+      noticeElement.textContent =
+        "오늘은 이미 명언을 뽑았어요. 내일 다시 만나요.";
+
+      return;
+
+    }
+
+
+    isDrawing = true;
 
 
     // 랜덤 명언 선택
+
     const randomIndex =
-      Math.floor(Math.random() * quotes.length);
-
-    const selectedQuote = quotes[randomIndex];
-
-
-    // 화면에 표시
-    showQuote(selectedQuote);
+      Math.floor(
+        Math.random() *
+        quotes.length
+      );
 
 
-    // 오늘 뽑은 명언 저장
+    const selectedQuote =
+      quotes[randomIndex];
+
+
+    // 명언 저장
+
     const saveData = {
 
       date: getToday(),
@@ -332,22 +829,46 @@
 
 
     localStorage.setItem(
+
       STORAGE_KEY,
-      JSON.stringify(saveData)
+
+      JSON.stringify(
+        saveData
+      )
+
     );
 
 
-    // 버튼 비활성화
-    drawButton.disabled = true;
+    // 카드 뒷면에 명언 넣기
 
-    drawButton.textContent =
-      "오늘의 명언을 뽑았습니다";
+    showQuote(
+      selectedQuote
+    );
 
 
-    noticeElement.textContent =
-      "오늘은 여기까지예요. 내일 새로운 명언을 뽑아보세요.";
+    // 잠깐 기다렸다가 카드 뒤집기
+
+    setTimeout(() => {
+
+      quoteCard.classList.add(
+        "flipped"
+      );
+
+      quoteCard.classList.add(
+        "disabled"
+      );
+
+
+      noticeElement.textContent =
+        "오늘의 명언을 마음에 담아보세요. 내일 새로운 카드를 뽑을 수 있어요.";
+
+
+      isDrawing = false;
+
+    }, 80);
 
   }
+
 
 
   // ==========================================
@@ -356,10 +877,14 @@
 
   async function loadQuotes() {
 
+
     try {
 
       const response =
-        await fetch("./quotes.json?ver=1");
+        await fetch(
+          "./quotes.json?ver=2"
+        );
+
 
       if (!response.ok) {
 
@@ -370,11 +895,13 @@
       }
 
 
-      quotes = await response.json();
+      quotes =
+        await response.json();
 
 
-      // 데이터가 배열인지 확인
-      if (!Array.isArray(quotes)) {
+      if (
+        !Array.isArray(quotes)
+      ) {
 
         throw new Error(
           "quotes.json 형식이 올바르지 않습니다."
@@ -388,16 +915,50 @@
       );
 
 
-      // 이미 오늘 뽑았는지 확인
-      const alreadyDrawn =
-        checkTodayResult();
+      // 오늘 이미 뽑았다면
+      // 기존 명언을 바로 보여줌
+
+      const savedQuote =
+        getSavedResult();
 
 
-      if (!alreadyDrawn) {
+      if (savedQuote) {
 
-        drawButton.disabled = false;
+        showQuote(
+          savedQuote
+        );
+
+
+        // 카드가 이미 뒤집힌 상태
+
+        quoteCard.classList.add(
+          "flipped"
+        );
+
+
+        quoteCard.classList.add(
+          "disabled"
+        );
+
+
+        noticeElement.textContent =
+          "오늘은 이미 명언을 뽑았어요. 내일 다시 만나요.";
 
       }
+      else {
+
+        // 새 카드
+
+        quoteCard.classList.add(
+          "ready"
+        );
+
+
+        noticeElement.textContent =
+          "카드를 눌러 오늘의 명언을 뽑아보세요.";
+
+      }
+
 
     } catch (error) {
 
@@ -418,7 +979,6 @@
 
       `;
 
-      drawButton.disabled = true;
 
       noticeElement.textContent =
         "quotes.json 파일을 확인해주세요.";
@@ -428,29 +988,73 @@
   }
 
 
+
+  // ==========================================
+  // 카드 클릭
+  // ==========================================
+
+  quoteCard.addEventListener(
+    "click",
+    drawQuote
+  );
+
+
+
   // ==========================================
   // 시작
   // ==========================================
 
   displayToday();
 
-  drawButton.addEventListener(
-    "click",
-    drawQuote
-  );
-
   loadQuotes();
 
-  // 서비스 워커 등록
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then((reg) => console.log('Service Worker Registered:', reg.scope))
-        .catch((err) => console.error('Service Worker Registration Failed:', err));
-    });
+
+
+  // ==========================================
+  // 서비스 워커
+  // ==========================================
+
+  if (
+    "serviceWorker" in navigator
+  ) {
+
+    window.addEventListener(
+      "load",
+      () => {
+
+        navigator.serviceWorker
+          .register("./sw.js")
+
+          .then(
+            (reg) => {
+
+              console.log(
+                "Service Worker Registered:",
+                reg.scope
+              );
+
+            }
+          )
+
+          .catch(
+            (err) => {
+
+              console.error(
+                "Service Worker Registration Failed:",
+                err
+              );
+
+            }
+          );
+
+      }
+    );
+
   }
 
+
 </script>
+
 
 </body>
 </html>
