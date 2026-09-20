@@ -267,12 +267,17 @@
     }
 
     .quote-card.reveal {
-      animation: cardReveal .8s cubic-bezier(.2,.75,.25,1) both;
+      animation: cardReveal .7s cubic-bezier(.2,.75,.25,1) both;
     }
 
     @keyframes cardReveal {
-      from { opacity: 0; transform: rotateY(-20deg) translateY(18px) scale(.94); }
-      to { opacity: 1; transform: rotateY(0) translateY(0) scale(1); }
+      from { opacity: 0; transform: translateY(18px) scale(.94); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* 명언 카드가 나타난 뒤 뒷면(명언)을 보여준다. */
+    .quote-card.flipped {
+      transform: rotateY(180deg);
     }
 
     .notice {
@@ -420,7 +425,13 @@
       showQuote(savedQuote);
       tarotStage.style.display = "none";
       quoteArea.classList.add("show");
+      quoteCard.classList.remove("flipped");
       noticeElement.textContent = "오늘의 한마디를 마음에 담아보세요.";
+
+      // 앞면이 잠깐 보인 뒤 카드가 뒤집히며 명언이 나타난다.
+      requestAnimationFrame(() => {
+        setTimeout(() => quoteCard.classList.add("flipped"), 250);
+      });
     }
 
     function drawQuote(choice) {
@@ -479,8 +490,16 @@
       setTimeout(() => {
         tarotStage.style.display = "none";
         quoteArea.classList.add("show");
+        quoteCard.classList.remove("flipped");
         noticeElement.textContent = "오늘의 한마디를 마음에 담아보세요.";
-        isDrawing = false;
+
+        // 명언 카드 앞면을 보여준 후 자연스럽게 뒤집는다.
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            quoteCard.classList.add("flipped");
+            isDrawing = false;
+          }, 250);
+        });
       }, 500);
     }
 
