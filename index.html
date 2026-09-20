@@ -76,13 +76,17 @@
       display: block;
       width: 100%;
       height: auto;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
     .choice {
       position: absolute;
-      top: 28.5%;
-      width: 21.5%;
-      height: 46.5%;
+      top: 27.8%;
+      width: 22.7%;
+      height: 49.0%;
+      z-index: 20;
       border: 0;
       padding: 0;
       background: transparent;
@@ -97,9 +101,9 @@
       outline-offset: 5px;
     }
 
-    .choice-1 { left: 12.9%; }
-    .choice-2 { left: 39.1%; }
-    .choice-3 { left: 65.4%; }
+    .choice-1 { left: 12.5%; }
+    .choice-2 { left: 38.7%; }
+    .choice-3 { left: 64.9%; }
 
     .choice:hover {
       transform: translateY(-7px) scale(1.015);
@@ -366,6 +370,7 @@
 
     let quotes = [];
     let isDrawing = false;
+    let quotesLoaded = false;
 
     function getToday() {
       const now = new Date();
@@ -419,7 +424,7 @@
     }
 
     function drawQuote(choice) {
-      if (isDrawing || !quotes.length) return;
+      if (isDrawing || !choice) return;
 
       const savedQuote = getSavedResult();
       if (savedQuote) {
@@ -427,16 +432,35 @@
         return;
       }
 
+      // 클릭 즉시 선택 상태를 보여준다.
       isDrawing = true;
       tarotStage.classList.add("choosing");
-
       choices.forEach(button => {
         button.disabled = true;
         button.classList.toggle("selected", button === choice);
       });
 
-      // 카드 위치에 따라 아주 약간 다른 순서를 사용하되,
-      // 최종 명언은 quotes.json에서 무작위로 한 개를 선택합니다.
+      noticeElement.textContent = "선택한 카드의 메시지를 준비하고 있어요...";
+
+      // quotes.json이 아직 로딩 중이면 로딩이 끝난 뒤 진행한다.
+      waitForQuotesAndReveal(choice);
+    }
+
+    function waitForQuotesAndReveal(choice) {
+      if (quotesLoaded && quotes.length > 0) {
+        revealQuote(choice);
+        return;
+      }
+
+      if (quotesLoaded && quotes.length === 0) {
+        showLoadError();
+        return;
+      }
+
+      setTimeout(() => waitForQuotesAndReveal(choice), 100);
+    }
+
+    function revealQuote(choice) {
       const randomIndex = Math.floor(Math.random() * quotes.length);
       const selectedQuote = quotes[randomIndex];
 
@@ -449,17 +473,24 @@
         })
       );
 
-      setTimeout(() => {
-        showQuote(selectedQuote);
-        tarotStage.classList.add("hidden");
+      showQuote(selectedQuote);
+      tarotStage.classList.add("hidden");
 
-        setTimeout(() => {
-          tarotStage.style.display = "none";
-          quoteArea.classList.add("show");
-          noticeElement.textContent = "오늘의 한마디를 마음에 담아보세요.";
-          isDrawing = false;
-        }, 380);
-      }, 550);
+      setTimeout(() => {
+        tarotStage.style.display = "none";
+        quoteArea.classList.add("show");
+        noticeElement.textContent = "오늘의 한마디를 마음에 담아보세요.";
+        isDrawing = false;
+      }, 500);
+    }
+
+    function showLoadError() {
+      isDrawing = false;
+      choices.forEach(button => {
+        button.disabled = false;
+      });
+      tarotStage.classList.remove("choosing");
+      noticeElement.textContent = "명언 데이터를 불러오지 못했어요. quotes.json 파일을 확인해주세요.";
     }
 
     async function loadQuotes() {
@@ -472,6 +503,7 @@
           throw new Error("quotes.json 형식이 올바르지 않습니다.");
         }
 
+        quotesLoaded = true;
         console.log(`명언 ${quotes.length}개를 불러왔습니다.`);
 
         const savedQuote = getSavedResult();
@@ -479,6 +511,7 @@
           showSavedQuote(savedQuote);
         }
       } catch (error) {
+        quotesLoaded = true;
         console.error("명언 데이터 불러오기 실패:", error);
         resultElement.innerHTML = `
           <div class="error">
@@ -491,7 +524,11 @@
     }
 
     choices.forEach(choice => {
-      choice.addEventListener("click", () => drawQuote(choice));
+      choice.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        drawQuote(this);
+      });
     });
 
     againButton.addEventListener("click", () => {
