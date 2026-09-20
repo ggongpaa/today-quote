@@ -8,7 +8,7 @@
 
   <!-- PWA -->
   <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#71866d">
+  <meta name="theme-color" content="#526653">
   <link rel="apple-touch-icon" href="./icon-192.png">
 
   <style>
@@ -17,11 +17,24 @@
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
       min-height: 100vh;
 
-      background: #f5f1e8;
+      background:
+        radial-gradient(
+          circle at 50% 20%,
+          #fffdf7 0%,
+          #f5f1e8 48%,
+          #e8e5da 100%
+        );
 
       font-family:
         -apple-system,
@@ -30,19 +43,19 @@
         "Malgun Gothic",
         sans-serif;
 
-      color: #3d463d;
+      color: #39443b;
 
       display: flex;
       justify-content: center;
       align-items: center;
 
-      padding: 30px 15px;
+      padding: 28px 15px;
     }
 
 
-    /* ==========================================
-       전체 컨테이너
-       ========================================== */
+    /* =========================================
+       전체
+       ========================================= */
 
     .container {
       width: 100%;
@@ -52,43 +65,45 @@
     }
 
 
-    /* ==========================================
+    /* =========================================
        제목
-       ========================================== */
+       ========================================= */
 
     .title {
-      font-size: 30px;
+      font-size: 29px;
       font-weight: 700;
 
-      margin-bottom: 8px;
+      letter-spacing: -0.8px;
 
-      color: #425443;
+      color: #405143;
+
+      margin-bottom: 7px;
     }
 
 
     .subtitle {
-      font-size: 15px;
+      font-size: 14px;
 
-      color: #777;
+      color: #777b74;
 
-      margin-bottom: 18px;
+      line-height: 1.7;
 
-      line-height: 1.6;
+      margin-bottom: 10px;
     }
 
 
     .date {
-      font-size: 14px;
+      font-size: 13px;
 
-      color: #7b8178;
+      color: #858a82;
 
-      margin-bottom: 25px;
+      margin-bottom: 24px;
     }
 
 
-    /* ==========================================
+    /* =========================================
        카드 영역
-       ========================================== */
+       ========================================= */
 
     .card-wrapper {
 
@@ -97,15 +112,15 @@
       display: flex;
       justify-content: center;
 
-      perspective: 1200px;
+      perspective: 1400px;
 
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
 
-    /* ==========================================
-       실제 뒤집히는 카드
-       ========================================== */
+    /* =========================================
+       카드
+       ========================================= */
 
     .quote-card {
 
@@ -120,26 +135,100 @@
       transform-style: preserve-3d;
 
       transition:
-        transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+        transform 0.95s cubic-bezier(
+          0.2,
+          0.75,
+          0.25,
+          1
+        );
 
       -webkit-tap-highlight-color: transparent;
 
       user-select: none;
+
+      filter:
+        drop-shadow(
+          0 18px 22px rgba(57, 68, 59, 0.18)
+        );
     }
 
 
-    /* 카드 뒤집힘 */
+    /* 카드가 준비되었을 때 */
+
+    .quote-card.ready {
+
+      animation:
+        cardEntrance 0.8s ease-out,
+        gentleFloat 3.5s ease-in-out
+          1s infinite;
+    }
+
+
+    /* =========================================
+       카드 등장
+       ========================================= */
+
+    @keyframes cardEntrance {
+
+      from {
+        opacity: 0;
+
+        transform:
+          translateY(25px)
+          scale(0.94)
+          rotate(-2deg);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          translateY(0)
+          scale(1)
+          rotate(0);
+      }
+
+    }
+
+
+    /* =========================================
+       카드 살짝 떠 있는 효과
+       ========================================= */
+
+    @keyframes gentleFloat {
+
+      0%,
+      100% {
+        transform:
+          translateY(0)
+          rotate(0deg);
+      }
+
+      50% {
+        transform:
+          translateY(-7px)
+          rotate(0.4deg);
+      }
+
+    }
+
+
+    /* =========================================
+       카드 뒤집기
+       ========================================= */
 
     .quote-card.flipped {
 
-      transform: rotateY(180deg);
+      transform:
+        rotateY(180deg);
 
+      animation: none;
     }
 
 
-    /* ==========================================
-       카드 앞 / 뒤 공통
-       ========================================== */
+    /* =========================================
+       카드 앞 / 뒤
+       ========================================= */
 
     .card-face {
 
@@ -151,34 +240,40 @@
       top: 0;
       left: 0;
 
-      border-radius: 24px;
+      border-radius: 25px;
 
       overflow: hidden;
 
       backface-visibility: hidden;
 
       -webkit-backface-visibility: hidden;
-
-      box-shadow:
-        0 15px 35px rgba(70, 70, 50, 0.16);
     }
 
 
-    /* ==========================================
+    /* =========================================
        카드 앞면
-       ========================================== */
+       ========================================= */
 
     .card-front {
 
       background:
+
         radial-gradient(
-          circle at center,
-          #82977d 0%,
-          #71866d 45%,
-          #5e735b 100%
+          circle at 50% 42%,
+          #728a70 0%,
+          #5e755e 43%,
+          #465d49 100%
         );
 
-      color: white;
+      color: #fffdf5;
+
+      border:
+        7px solid rgba(
+          255,
+          255,
+          255,
+          0.15
+        );
 
       display: flex;
 
@@ -188,13 +283,17 @@
 
       align-items: center;
 
-      padding: 30px;
+      padding: 35px;
 
-      border: 8px solid rgba(255,255,255,0.18);
+      box-shadow:
+        inset 0 0 0 1px
+          rgba(255,255,255,0.2);
     }
 
 
-    /* 카드 안쪽 장식 */
+    /* =========================================
+       카드 안쪽 테두리
+       ========================================= */
 
     .card-front::before {
 
@@ -204,7 +303,9 @@
 
       inset: 14px;
 
-      border: 1px solid rgba(255,255,255,0.35);
+      border:
+        1px solid
+        rgba(245,238,215,0.45);
 
       border-radius: 18px;
 
@@ -212,13 +313,98 @@
     }
 
 
-    .star {
+    .card-front::after {
 
-      font-size: 28px;
+      content: "";
 
-      margin-bottom: 25px;
+      position: absolute;
 
-      opacity: 0.9;
+      inset: 21px;
+
+      border:
+        1px solid
+        rgba(245,238,215,0.14);
+
+      border-radius: 13px;
+
+      pointer-events: none;
+    }
+
+
+    /* =========================================
+       카드 장식
+       ========================================= */
+
+    .moon {
+
+      width: 50px;
+      height: 50px;
+
+      border-radius: 50%;
+
+      border:
+        2px solid
+        rgba(247,240,216,0.9);
+
+      position: relative;
+
+      margin-bottom: 27px;
+
+      box-shadow:
+        0 0 18px
+        rgba(247,240,216,0.12);
+    }
+
+
+    .moon::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 44px;
+      height: 44px;
+
+      border-radius: 50%;
+
+      background: #617961;
+
+      top: -6px;
+      left: 10px;
+    }
+
+
+    .stars {
+
+      position: absolute;
+
+      font-size: 14px;
+
+      color:
+        rgba(247,240,216,0.8);
+
+      letter-spacing: 14px;
+    }
+
+
+    .star-top {
+
+      top: 43px;
+      left: 48px;
+    }
+
+
+    .star-right {
+
+      top: 70px;
+      right: 40px;
+    }
+
+
+    .star-bottom {
+
+      bottom: 70px;
+      left: 42px;
     }
 
 
@@ -226,21 +412,27 @@
 
       font-size: 28px;
 
-      font-weight: 700;
+      font-weight: 600;
 
-      letter-spacing: 2px;
+      letter-spacing: 3px;
 
-      margin-bottom: 14px;
+      line-height: 1.5;
+
+      margin-bottom: 13px;
+
+      text-shadow:
+        0 2px 8px
+        rgba(0,0,0,0.12);
     }
 
 
     .front-subtitle {
 
-      font-size: 14px;
-
-      opacity: 0.9;
+      font-size: 13px;
 
       letter-spacing: 1px;
+
+      opacity: 0.82;
     }
 
 
@@ -248,39 +440,129 @@
 
       position: absolute;
 
-      bottom: 30px;
+      bottom: 31px;
 
-      font-size: 12px;
+      font-size: 10px;
 
-      letter-spacing: 1px;
+      letter-spacing: 2.5px;
 
-      opacity: 0.75;
+      opacity: 0.65;
     }
 
 
-    /* ==========================================
-       카드 뒷면 = 명언
-       ========================================== */
+    /* =========================================
+       식물 장식
+       ========================================= */
+
+    .leaf {
+
+      position: absolute;
+
+      font-size: 21px;
+
+      opacity: 0.45;
+
+      color: #dfe6d7;
+    }
+
+
+    .leaf-1 {
+      top: 92px;
+      left: 30px;
+      transform: rotate(-25deg);
+    }
+
+    .leaf-2 {
+      bottom: 98px;
+      right: 28px;
+      transform: rotate(25deg);
+    }
+
+    .leaf-3 {
+      bottom: 46px;
+      right: 65px;
+      font-size: 15px;
+    }
+
+
+    /* =========================================
+       카드 뒷면
+       ========================================= */
 
     .card-back {
 
-      transform: rotateY(180deg);
+      transform:
+        rotateY(180deg);
 
-      background: #fffdf8;
+      background:
+        linear-gradient(
+          145deg,
+          #fffdf8,
+          #f7f2e7
+        );
+
+      border:
+        1px solid #ded8ca;
 
       display: flex;
-
-      flex-direction: column;
 
       justify-content: center;
 
       align-items: center;
 
-      padding: 35px 28px;
+      padding: 32px 27px;
 
       text-align: center;
+    }
 
-      border: 1px solid #e6e0d5;
+
+    /* 뒷면 테두리 */
+
+    .card-back::before {
+
+      content: "";
+
+      position: absolute;
+
+      inset: 13px;
+
+      border:
+        1px solid #b7bcae;
+
+      border-radius: 18px;
+
+      pointer-events: none;
+    }
+
+
+    .card-back::after {
+
+      content: "";
+
+      position: absolute;
+
+      inset: 19px;
+
+      border:
+        1px solid #e3ded1;
+
+      border-radius: 14px;
+
+      pointer-events: none;
+    }
+
+
+    /* =========================================
+       명언
+       ========================================= */
+
+    #result {
+
+      width: 100%;
+
+      position: relative;
+
+      z-index: 2;
     }
 
 
@@ -290,35 +572,35 @@
 
       font-size: 55px;
 
-      line-height: 0.7;
+      line-height: 0.6;
 
       color: #71866d;
 
-      margin-bottom: 18px;
+      margin-bottom: 17px;
     }
 
 
     .message {
 
-      font-size: 19px;
+      font-size: 18px;
 
-      line-height: 1.8;
+      line-height: 1.85;
 
       font-weight: 500;
 
+      color: #39443b;
+
       word-break: keep-all;
 
-      color: #3d463d;
-
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
 
     .author {
 
-      font-size: 14px;
+      font-size: 13px;
 
-      color: #777;
+      color: #777b74;
 
       margin-bottom: 12px;
     }
@@ -332,68 +614,59 @@
 
       border-radius: 20px;
 
-      background: #e8eee5;
+      background: #e5ebe1;
 
       color: #5d6c5a;
 
-      font-size: 12px;
+      font-size: 11px;
     }
 
 
-    /* ==========================================
-       안내 문구
-       ========================================== */
+    /* =========================================
+       명언 등장 효과
+       ========================================= */
 
-    .notice {
-
-      font-size: 13px;
-
-      color: #888;
-
-      line-height: 1.7;
-
-      min-height: 45px;
-    }
-
-
-    .loading {
-
-      color: #888;
-
-      font-size: 15px;
-    }
-
-
-    .error {
-
-      color: #a05b5b;
-
-      font-size: 14px;
-
-      line-height: 1.6;
-    }
-
-
-    /* ==========================================
-       카드 등장 애니메이션
-       ========================================== */
-
-    .quote-card.ready {
+    .flipped .message {
 
       animation:
-        cardAppear 0.7s ease-out;
+        quoteAppear
+        0.8s
+        ease-out
+        0.35s
+        both;
     }
 
 
-    @keyframes cardAppear {
+    .flipped .author {
+
+      animation:
+        quoteAppear
+        0.8s
+        ease-out
+        0.5s
+        both;
+    }
+
+
+    .flipped .category {
+
+      animation:
+        quoteAppear
+        0.8s
+        ease-out
+        0.65s
+        both;
+    }
+
+
+    @keyframes quoteAppear {
 
       from {
 
         opacity: 0;
 
         transform:
-          translateY(20px)
-          scale(0.96);
+          translateY(12px);
       }
 
       to {
@@ -401,82 +674,80 @@
         opacity: 1;
 
         transform:
-          translateY(0)
-          scale(1);
-      }
-
-    }
-
-
-    /* ==========================================
-       클릭 유도용 살짝 움직임
-       ========================================== */
-
-    .quote-card:not(.flipped):not(.disabled) {
-
-      animation:
-        gentleFloat 2.8s ease-in-out infinite;
-    }
-
-
-    @keyframes gentleFloat {
-
-      0%, 100% {
-
-        transform:
           translateY(0);
       }
 
-      50% {
-
-        transform:
-          translateY(-6px);
-      }
-
     }
 
 
-    /* 뒤집힌 후에는 애니메이션 제거 */
+    /* =========================================
+       안내 문구
+       ========================================= */
 
-    .quote-card.flipped {
+    .notice {
 
-      animation: none;
+      min-height: 45px;
+
+      font-size: 13px;
+
+      line-height: 1.7;
+
+      color: #858a82;
     }
 
 
-    /* ==========================================
-       이미 오늘 뽑은 경우
-       ========================================== */
+    .loading {
 
-    .quote-card.disabled {
+      color: #888;
 
-      cursor: default;
+      font-size: 14px;
     }
 
 
-    /* ==========================================
-       모바일
-       ========================================== */
+    .error {
+
+      color: #a05b5b;
+
+      font-size: 13px;
+
+      line-height: 1.7;
+    }
+
+
+    /* =========================================
+       작은 화면
+       ========================================= */
 
     @media (max-width: 400px) {
 
+      body {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+
       .title {
-        font-size: 27px;
+        font-size: 26px;
       }
 
       .subtitle {
-        font-size: 14px;
+        font-size: 13px;
       }
 
       .quote-card {
-        width: min(84vw, 310px);
+        width: min(84vw, 305px);
       }
 
       .message {
-        font-size: 17px;
+        font-size: 16.5px;
+        line-height: 1.75;
+      }
+
+      .front-title {
+        font-size: 26px;
       }
 
     }
+
 
   </style>
 
@@ -509,9 +780,9 @@
   </div>
 
 
-  <!-- ========================================
+  <!-- =======================================
        카드
-       ======================================== -->
+       ======================================= -->
 
   <div class="card-wrapper">
 
@@ -520,37 +791,71 @@
       id="quoteCard">
 
 
-      <!-- ====================================
-           카드 앞면
-           ==================================== -->
+      <!-- =====================================
+           앞면
+           ===================================== -->
 
       <div class="card-face card-front">
 
-        <div class="star">
+
+        <div class="stars star-top">
           ✦
         </div>
+
+
+        <div class="stars star-right">
+          ✦
+        </div>
+
+
+        <div class="stars star-bottom">
+          ✦
+        </div>
+
+
+        <div class="leaf leaf-1">
+          ❧
+        </div>
+
+
+        <div class="leaf leaf-2">
+          ❧
+        </div>
+
+
+        <div class="leaf leaf-3">
+          ❧
+        </div>
+
+
+        <div class="moon"></div>
+
 
         <div class="front-title">
           오늘의<br>
           마음
         </div>
 
+
         <div class="front-subtitle">
           한 장의 카드를 뽑아보세요
         </div>
+
 
         <div class="tap-text">
           TAP TO DRAW
         </div>
 
+
       </div>
 
 
-      <!-- ====================================
-           카드 뒷면
-           ==================================== -->
+      <!-- =====================================
+           뒷면
+           ===================================== -->
 
       <div class="card-face card-back">
+
 
         <div id="result">
 
@@ -559,6 +864,7 @@
           </div>
 
         </div>
+
 
       </div>
 
@@ -700,7 +1006,7 @@
 
 
   // ==========================================
-  // 오늘 이미 뽑았는지 확인
+  // 저장된 오늘의 명언
   // ==========================================
 
   function getSavedResult() {
@@ -712,9 +1018,7 @@
 
 
     if (!saved) {
-
       return null;
-
     }
 
 
@@ -750,16 +1054,14 @@
 
 
   // ==========================================
-  // 오늘의 명언 뽑기
+  // 카드 뽑기
   // ==========================================
 
   function drawQuote() {
 
 
     if (isDrawing) {
-
       return;
-
     }
 
 
@@ -767,13 +1069,11 @@
       !quotes ||
       quotes.length === 0
     ) {
-
       return;
-
     }
 
 
-    // 오늘 이미 뽑았다면 종료
+    // 이미 오늘 뽑았는지 확인
 
     const savedQuote =
       getSavedResult();
@@ -804,7 +1104,7 @@
     isDrawing = true;
 
 
-    // 랜덤 명언 선택
+    // 랜덤 선택
 
     const randomIndex =
       Math.floor(
@@ -817,36 +1117,31 @@
       quotes[randomIndex];
 
 
-    // 명언 저장
-
-    const saveData = {
-
-      date: getToday(),
-
-      quote: selectedQuote
-
-    };
-
+    // 저장
 
     localStorage.setItem(
 
       STORAGE_KEY,
 
-      JSON.stringify(
-        saveData
-      )
+      JSON.stringify({
+
+        date: getToday(),
+
+        quote: selectedQuote
+
+      })
 
     );
 
 
-    // 카드 뒷면에 명언 넣기
+    // 뒷면에 명언 준비
 
     showQuote(
       selectedQuote
     );
 
 
-    // 잠깐 기다렸다가 카드 뒤집기
+    // 카드 뒤집기
 
     setTimeout(() => {
 
@@ -854,18 +1149,18 @@
         "flipped"
       );
 
+
       quoteCard.classList.add(
         "disabled"
       );
 
 
       noticeElement.textContent =
-        "오늘의 명언을 마음에 담아보세요. 내일 새로운 카드를 뽑을 수 있어요.";
-
+        "오늘의 한마디를 마음에 담아보세요.";
 
       isDrawing = false;
 
-    }, 80);
+    }, 100);
 
   }
 
@@ -877,12 +1172,11 @@
 
   async function loadQuotes() {
 
-
     try {
 
       const response =
         await fetch(
-          "./quotes.json?ver=2"
+          "./quotes.json?ver=3"
         );
 
 
@@ -915,8 +1209,7 @@
       );
 
 
-      // 오늘 이미 뽑았다면
-      // 기존 명언을 바로 보여줌
+      // 오늘 이미 뽑았는지 확인
 
       const savedQuote =
         getSavedResult();
@@ -928,8 +1221,6 @@
           savedQuote
         );
 
-
-        // 카드가 이미 뒤집힌 상태
 
         quoteCard.classList.add(
           "flipped"
@@ -946,8 +1237,6 @@
 
       }
       else {
-
-        // 새 카드
 
         quoteCard.classList.add(
           "ready"
