@@ -75,6 +75,7 @@
       cursor:default;
       filter:drop-shadow(0 20px 25px rgba(57,68,59,.22));
       transition:transform 1s cubic-bezier(.2,.75,.25,1);
+      will-change:transform;
     }
 
     /* 1초 동안 살짝 흔들린다 */
@@ -92,14 +93,18 @@
     .card-face {
       position:absolute;
       inset:0;
+      width:100%;
+      height:100%;
       border-radius:23px;
       overflow:hidden;
       backface-visibility:hidden;
       -webkit-backface-visibility:hidden;
+      transform-style:preserve-3d;
     }
 
     /* 타로 카드 뒷면 */
     .card-front {
+      transform:rotateY(0deg);
       background:
         radial-gradient(circle at 50% 50%, rgba(255,255,255,.08), transparent 42%),
         linear-gradient(145deg,#4e6b53,#304b38);
@@ -149,18 +154,11 @@
     .leaf-line.bottom { transform:rotate(172deg); margin-top:18px; }
     .tiny-stars { font-size:12px; letter-spacing:7px; opacity:.9; }
 
-    .tapless {
-      position:absolute;
-      bottom:31px;
-      font-size:10px;
-      letter-spacing:2.2px;
-      color:#f7edcf;
-      opacity:.65;
-    }
-
     /* 명언 앞면 */
     .card-back {
       transform:rotateY(180deg);
+      backface-visibility:hidden;
+      -webkit-backface-visibility:hidden;
       background:linear-gradient(145deg,#fffdf8,#f7f2e7);
       border:1px solid #ded8ca;
       display:flex;
@@ -239,7 +237,6 @@
             <div class="sun">✦</div>
             <div class="leaf-line bottom">❧ ❧</div>
             <div class="tiny-stars">✦ · ✧ · ✦</div>
-            <div class="tapless">YOUR MESSAGE FOR TODAY</div>
           </div>
         </div>
 
@@ -320,14 +317,18 @@
       if (started) return;
       started = true;
 
-      showQuote(quote);
-      noticeElement.textContent = "오늘의 한마디를 마음에 담아보세요.";
+      // 먼저 흔들림을 완전히 멈춘다.
       tarotCard.classList.remove("shaking");
+      noticeElement.textContent = "오늘의 한마디를 마음에 담아보세요.";
 
-      // 흔들림이 끝난 뒤 150ms 쉬고 카드가 뒤집힌다.
-      setTimeout(() => {
-        tarotCard.classList.add("flipped");
-      }, 150);
+      // 명언은 뒤집히는 면에 미리 준비해 두고,
+      // 다음 프레임에서 뒤집어 브라우저의 3D 렌더링이 안정적으로 동작하게 한다.
+      showQuote(quote);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          tarotCard.classList.add("flipped");
+        });
+      });
     }
 
     function revealWhenReady() {
