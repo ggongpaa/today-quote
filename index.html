@@ -54,8 +54,23 @@
       line-height:1.7;
       margin-bottom:7px;
     }
-    .date { font-size:13px; color:#858a82; margin:0; max-height:0; overflow:hidden; opacity:0; transform:translateY(8px); transition:opacity 1s ease, transform 1s ease, max-height 1s ease, margin .8s ease; pointer-events:none; }
-    .date.visible { opacity:1; transform:translateY(0); max-height:32px; margin:0 0 12px; }
+    /* 첫 화면에서는 날짜를 숨기고, 명언 카드가 나타나는 순간 함께 표시 */
+    .date {
+      font-size:13px;
+      color:#858a82;
+      margin:0 0 12px;
+      opacity:0;
+      transform:translateY(0);
+      pointer-events:none;
+    }
+    .date.visible {
+      opacity:1;
+    }
+
+    /* 날짜와 명언이 같은 타이밍에 자연스럽게 나타나도록 */
+    .date.visible {
+      animation:quoteAppear .7s ease both;
+    }
 
     /* 카드 영역 */
     .tarot-area {
@@ -371,6 +386,7 @@
       // 카드가 사라지는 동안 명언 카드는 뒤에서 준비하고,
       // 카드가 거의 사라진 뒤 명언 카드만 자연스럽게 등장시킨다.
       setTimeout(() => {
+        // 날짜와 명언 카드를 정확히 같은 시점에 표시
         todayElement.classList.add("visible");
         quoteReveal.classList.add("visible");
       }, 620);
@@ -426,7 +442,7 @@
       }
     }
 
-    // 첫 화면에서는 날짜를 숨기고, 명언이 나타날 때만 날짜를 서서히 보여준다.
+    // 첫 화면에서는 날짜를 숨기고, 명언 카드가 나타나는 순간 날짜도 함께 보여준다.
     loadQuotes();
 
     // 화면이 열린 뒤 정확히 1초 동안 흔들린 후 자동 공개
