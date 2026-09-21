@@ -211,7 +211,28 @@
     .reveal-content .category { animation-delay:.38s; }
     @keyframes quoteAppear { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
-    .notice { min-height:43px; font-size:12px; line-height:1.7; color:#858a82; padding:2px 10px; }
+    .notice { min-height:43px; font-size:12px; line-height:1.7; color:#858a82; padding:2px 10px; transition:opacity .7s ease, transform .7s ease; }
+    .title, .subtitle { transition:opacity .75s ease, transform .75s ease, filter .75s ease; }
+    .title.disappearing, .subtitle.disappearing {
+      opacity:0;
+      transform:translateY(-8px) scale(.98);
+      filter:blur(4px);
+      pointer-events:none;
+    }
+    .notice.disappearing {
+      opacity:0;
+      transform:translateY(-6px);
+      filter:blur(3px);
+      pointer-events:none;
+    }
+    .notice.today-complete {
+      opacity:1;
+      transform:translateY(0);
+      filter:none;
+      color:#66735f;
+      font-weight:500;
+      padding-top:8px;
+    }
     .loading,.error { font-size:13px; color:#888; line-height:1.7; }
     .error { color:#a05b5b; }
 
@@ -231,8 +252,8 @@
 </head>
 <body>
   <main class="container">
-    <div class="title">오늘의 명언을 뽑아보세요</div>
-    <div class="subtitle">잠시만 기다려주세요. 오늘의 한마디를 준비하고 있어요.</div>
+    <div class="title" id="pageTitle">오늘의 명언을 뽑아보세요</div>
+    <div class="subtitle" id="waitingMessage">잠시만 기다려주세요. 오늘의 한마디를 준비하고 있어요.</div>
     <div class="date" id="today"></div>
 
     <section class="tarot-area" aria-label="오늘의 타로 카드">
@@ -259,7 +280,7 @@
       </div>
     </section>
 
-    <div class="notice" id="notice">카드가 살짝 흔들린 뒤, 저절로 뒤집혀요.</div>
+    <div class="notice" id="notice">카드가 살짝 흔들린 뒤, 오늘의 한마디가 나타나요.</div>
   </main>
 
   <script>
@@ -269,6 +290,8 @@
     const quoteReveal = document.getElementById("quoteReveal");
     const resultElement = document.getElementById("result");
     const noticeElement = document.getElementById("notice");
+    const waitingMessage = document.getElementById("waitingMessage");
+    const pageTitle = document.getElementById("pageTitle");
 
     let quotes = [];
     let quotesLoaded = false;
@@ -331,8 +354,12 @@
       if (revealStarted) return;
       revealStarted = true;
 
+      // 카드가 사라지는 순간, 준비 안내 문구도 함께 사라지게 한다.
+      pageTitle.classList.add("disappearing");
+      waitingMessage.classList.add("disappearing");
+      noticeElement.classList.add("disappearing");
+
       showQuote(quote);
-      noticeElement.textContent = "오늘의 한마디를 마음에 담아보세요.";
 
       // 카드가 흔들림을 멈추고 모래처럼 부드럽게 사라진다.
       tarotCard.classList.remove("shaking");
@@ -346,7 +373,10 @@
 
       setTimeout(() => {
         tarotCard.style.visibility = "hidden";
-      }, 850);
+        noticeElement.classList.remove("disappearing");
+        noticeElement.classList.add("today-complete");
+        noticeElement.textContent = "오늘의 명언은 여기까지예요. 내일 다시 만나요.";
+      }, 900);
     }
 
     function waitAndReveal() {
