@@ -54,12 +54,13 @@
       line-height:1.7;
       margin-bottom:7px;
     }
-    .date { font-size:12px; color:#858a82; margin-bottom:18px; }
+    .date { font-size:13px; color:#858a82; margin:0; max-height:0; overflow:hidden; opacity:0; transform:translateY(8px); transition:opacity 1s ease, transform 1s ease, max-height 1s ease, margin .8s ease; pointer-events:none; }
+    .date.visible { opacity:1; transform:translateY(0); max-height:32px; margin:0 0 12px; }
 
     /* 카드 영역 */
     .tarot-area {
       width:100%;
-      min-height:390px;
+      min-height:430px;
       display:flex;
       justify-content:center;
       align-items:center;
@@ -164,16 +165,17 @@
     /* 카드가 사라진 뒤 나타나는 명언 영역 */
     .quote-reveal {
       position:absolute;
-      width:min(58vw,285px);
+      width:min(88vw,460px);
       aspect-ratio:.68;
-      border-radius:23px;
+      max-height:72vh;
+      border-radius:28px;
       background:linear-gradient(145deg,#fffdf8,#f7f2e7);
       border:1px solid #ded8ca;
       box-shadow:0 20px 30px rgba(57,68,59,.16), inset 0 0 0 1px rgba(255,255,255,.65);
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:30px 25px;
+      padding:44px 34px;
       text-align:center;
       opacity:0;
       transform:translateY(12px) scale(.94);
@@ -243,9 +245,10 @@
 
     @media(max-width:430px){
       body{padding-top:18px}
-      .date{margin-bottom:8px}
-      .tarot-area{min-height:350px}
+      .date{margin-bottom:10px}
+      .tarot-area{min-height:390px}
       .tarot-card{width:min(62vw,270px)}
+      .quote-reveal{width:min(88vw,410px);padding:38px 28px;border-radius:26px;max-height:74vh}
       .message{font-size:16px}
     }
   </style>
@@ -368,6 +371,7 @@
       // 카드가 사라지는 동안 명언 카드는 뒤에서 준비하고,
       // 카드가 거의 사라진 뒤 명언 카드만 자연스럽게 등장시킨다.
       setTimeout(() => {
+        todayElement.classList.add("visible");
         quoteReveal.classList.add("visible");
       }, 620);
 
@@ -375,7 +379,7 @@
         tarotCard.style.visibility = "hidden";
         noticeElement.classList.remove("disappearing");
         noticeElement.classList.add("today-complete");
-        noticeElement.textContent = "오늘의 명언은 여기까지예요. 내일 다시 만나요.";
+        noticeElement.textContent = "오늘의 한마디는 하루에 한 번만 만날 수 있어요. 내일 다시 만나요.";
       }, 900);
     }
 
@@ -422,7 +426,7 @@
       }
     }
 
-    displayToday();
+    // 첫 화면에서는 날짜를 숨기고, 명언이 나타날 때만 날짜를 서서히 보여준다.
     loadQuotes();
 
     // 화면이 열린 뒤 정확히 1초 동안 흔들린 후 자동 공개
