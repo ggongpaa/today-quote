@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#fffdf7" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#fffdf7" media="(prefers-color-scheme: dark)">
+    <meta name="color-scheme" content="light">
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./icon-192.png">
   <title>오늘의 명언 뽑기</title>
@@ -15,7 +16,8 @@
     body {
       min-height:100vh;
       min-height:100svh;
-      background:#fffdf7 !important;
+      background:
+        radial-gradient(circle at 50% 22%, #fffdf7 0%, #f5f1e8 50%, #e6e6d8 100%);
       font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
       color:#39443b;
       display:flex;
@@ -39,8 +41,8 @@
       opacity:.25;
       pointer-events:none;
     }
-    body::before { display:none; }
-    body::after { display:none; }
+    body::before { left:-100px; top:-70px; background:#b7c9ad; }
+    body::after { right:-110px; bottom:-90px; background:#d7cda9; }
 
     .container { width:100%; max-width:520px; text-align:center; position:relative; z-index:1; }
 
@@ -299,12 +301,12 @@
       }
 
       .tarot-card{
-        width:min(82vw,340px);
+        width:min(72vw,320px);
         max-width:320px;
       }
 
       .quote-reveal{
-        width:min(94vw,440px);
+        width:min(92vw,430px);
         height:min(68svh,560px);
         max-height:none;
         padding:42px 26px;
@@ -334,6 +336,64 @@
       }
     }
   </style>
+
+    <!-- Force a bright, full-screen appearance across browsers -->
+    <style id="bright-mobile-override">
+      :root {
+        color-scheme: light !important;
+        background: #fffdf7 !important;
+      }
+      html, body {
+        width: 100% !important;
+        min-width: 100% !important;
+        min-height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fffdf7 !important;
+        background-image: none !important;
+        color: #333 !important;
+        color-scheme: light !important;
+        forced-color-adjust: none !important;
+      }
+      body::before, body::after {
+        display: none !important;
+        content: none !important;
+      }
+      .container, .tarot-area, .tarot-card, .quote-reveal,
+      .quote-card, .message, .notice, button {
+        color-scheme: light !important;
+        forced-color-adjust: none !important;
+      }
+      @media (max-width: 600px) {
+        html, body {
+          width: 100vw !important;
+          min-height: 100svh !important;
+          height: 100% !important;
+          overflow-x: hidden !important;
+          background: #fffdf7 !important;
+          background-image: none !important;
+        }
+        .container {
+          width: 100% !important;
+          max-width: none !important;
+          min-height: 100svh !important;
+          box-sizing: border-box !important;
+          padding-left: max(10px, env(safe-area-inset-left)) !important;
+          padding-right: max(10px, env(safe-area-inset-right)) !important;
+        }
+        .tarot-area { width: 100% !important; box-sizing: border-box !important; }
+        .tarot-card {
+          width: min(82vw, 340px) !important;
+          max-width: 340px !important;
+        }
+        .quote-reveal {
+          width: min(94vw, 440px) !important;
+          max-width: 440px !important;
+          box-sizing: border-box !important;
+        }
+      }
+    </style>
+
 </head>
 <body>
   <main class="container">
