@@ -15,8 +15,7 @@
     body {
       min-height:100vh;
       min-height:100svh;
-      background:
-        radial-gradient(circle at 50% 22%, #fffdf7 0%, #f5f1e8 50%, #e6e6d8 100%);
+      background:#fffdf7 !important;
       font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
       color:#39443b;
       display:flex;
@@ -40,8 +39,8 @@
       opacity:.25;
       pointer-events:none;
     }
-    body::before { left:-100px; top:-70px; background:#b7c9ad; }
-    body::after { right:-110px; bottom:-90px; background:#d7cda9; }
+    body::before { display:none; }
+    body::after { display:none; }
 
     .container { width:100%; max-width:520px; text-align:center; position:relative; z-index:1; }
 
@@ -300,12 +299,12 @@
       }
 
       .tarot-card{
-        width:min(72vw,320px);
+        width:min(82vw,340px);
         max-width:320px;
       }
 
       .quote-reveal{
-        width:min(92vw,430px);
+        width:min(94vw,440px);
         height:min(68svh,560px);
         max-height:none;
         padding:42px 26px;
