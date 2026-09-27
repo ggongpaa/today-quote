@@ -2,17 +2,19 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#526653">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#fffdf7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#fffdf7" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./icon-192.png">
   <title>오늘의 명언 뽑기</title>
 
   <style>
     * { box-sizing: border-box; }
-    html, body { margin:0; padding:0; width:100%; min-height:100%; }
+    html, body { margin:0; padding:0; width:100%; min-height:100%; background:#fffdf7; color-scheme:light; }
     body {
       min-height:100vh;
+      min-height:100svh;
       background:
         radial-gradient(circle at 50% 22%, #fffdf7 0%, #f5f1e8 50%, #e6e6d8 100%);
       font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
@@ -21,7 +23,11 @@
       justify-content:center;
       align-items:center;
       padding:24px 15px 30px;
+      padding-left:max(15px, env(safe-area-inset-left));
+      padding-right:max(15px, env(safe-area-inset-right));
+      padding-bottom:max(30px, env(safe-area-inset-bottom));
       overflow-x:hidden;
+      color-scheme:light;
     }
 
     body::before, body::after {
@@ -184,7 +190,7 @@
       aspect-ratio:.68;
       max-height:72vh;
       border-radius:28px;
-      background:linear-gradient(145deg,#fffdf8,#f7f2e7);
+      background:#fffdf8;
       border:1px solid #ded8ca;
       box-shadow:0 20px 30px rgba(57,68,59,.16), inset 0 0 0 1px rgba(255,255,255,.65);
       display:flex;
@@ -259,12 +265,74 @@
     @keyframes sparkle { 0%,100%{opacity:0;transform:scale(.7)} 45%{opacity:.7;transform:scale(1)} }
 
     @media(max-width:430px){
-      body{padding-top:18px}
+      html, body{
+        width:100%;
+        min-height:100%;
+        min-height:100svh;
+        background:#fffdf7 !important;
+        color-scheme:light !important;
+      }
+
+      body{
+        padding:18px 10px max(24px, env(safe-area-inset-bottom));
+        align-items:stretch;
+      }
+
+      .container{
+        width:100%;
+        max-width:none;
+        min-height:calc(100svh - 42px);
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+      }
+
+      .title{font-size:clamp(25px,7.2vw,32px)}
+      .subtitle{font-size:clamp(13px,3.8vw,16px)}
       .date{margin-bottom:10px}
-      .tarot-area{min-height:390px}
-      .tarot-card{width:min(62vw,270px)}
-      .quote-reveal{width:min(88vw,410px);padding:38px 28px;border-radius:26px;max-height:74vh}
-      .message{font-size:16px}
+
+      .tarot-area{
+        width:100%;
+        min-height:0;
+        height:62svh;
+        max-height:560px;
+        flex:1;
+      }
+
+      .tarot-card{
+        width:min(72vw,320px);
+        max-width:320px;
+      }
+
+      .quote-reveal{
+        width:min(92vw,430px);
+        height:min(68svh,560px);
+        max-height:none;
+        padding:42px 26px;
+        border-radius:26px;
+        background:#fffdf8 !important;
+      }
+
+      .message{
+        font-size:clamp(16px,4.8vw,20px);
+        line-height:1.85;
+      }
+
+      .notice{
+        min-height:43px;
+        padding-bottom:env(safe-area-inset-bottom);
+      }
+    }
+
+    @media (prefers-color-scheme: dark){
+      html, body{
+        background:#fffdf7 !important;
+        color-scheme:light !important;
+      }
+      .quote-reveal{
+        background:#fffdf8 !important;
+        color:#39443b;
+      }
     }
   </style>
 </head>
