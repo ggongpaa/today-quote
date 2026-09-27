@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="light only">
   <meta name="theme-color" content="#fffdf7" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#fffdf7" media="(prefers-color-scheme: dark)">
-    <meta name="color-scheme" content="light">
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./icon-192.png">
   <title>오늘의 명언 뽑기</title>
@@ -335,65 +335,93 @@
         color:#39443b;
       }
     }
+  
+/* ===== FINAL MOBILE / LIGHT MODE OVERRIDES ===== */
+html {
+  width:100% !important;
+  min-height:100% !important;
+  background:#fffdf7 !important;
+  color-scheme:light !important;
+  forced-color-adjust:none !important;
+}
+body {
+  width:100% !important;
+  min-width:100% !important;
+  min-height:100vh !important;
+  min-height:100dvh !important;
+  margin:0 !important;
+  padding:16px 10px 20px !important;
+  background:#fffdf7 !important;
+  background-image:none !important;
+  color:#39443b !important;
+  color-scheme:light !important;
+  forced-color-adjust:none !important;
+}
+body::before, body::after { display:none !important; content:none !important; }
+.container {
+  width:100% !important;
+  max-width:520px !important;
+  min-height:calc(100dvh - 36px) !important;
+  margin:0 auto !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  align-items:center !important;
+}
+.title,.subtitle,.date,.notice { forced-color-adjust:none !important; }
+@media (max-width:600px) {
+  body { padding:14px 8px 18px !important; }
+  .container {
+    width:100% !important;
+    max-width:none !important;
+    min-height:calc(100dvh - 32px) !important;
+  }
+  .title {
+    font-size:clamp(26px,8vw,34px) !important;
+    margin-bottom:5px !important;
+  }
+  .subtitle {
+    font-size:clamp(13px,3.8vw,16px) !important;
+    margin-bottom:4px !important;
+  }
+  .date { margin-bottom:6px !important; }
+  .tarot-area {
+    width:100% !important;
+    min-height:0 !important;
+    height:62dvh !important;
+    max-height:590px !important;
+    flex:1 1 auto !important;
+  }
+  .tarot-card {
+    width:min(82vw,340px) !important;
+    max-width:340px !important;
+  }
+  .quote-reveal {
+    width:min(94vw,440px) !important;
+    max-width:440px !important;
+    height:min(68dvh,560px) !important;
+    max-height:none !important;
+    aspect-ratio:.68 !important;
+    padding:34px 24px !important;
+    background:#fffdf8 !important;
+    background-image:none !important;
+    color:#39443b !important;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  html, body {
+    background:#fffdf7 !important;
+    background-image:none !important;
+    color-scheme:light !important;
+    forced-color-adjust:none !important;
+  }
+  .quote-reveal { background:#fffdf8 !important; color:#39443b !important; }
+}
+@media (forced-colors: active) {
+  html, body { forced-color-adjust:none !important; background:#fffdf7 !important; }
+}
+
   </style>
-
-    <!-- Force a bright, full-screen appearance across browsers -->
-    <style id="bright-mobile-override">
-      :root {
-        color-scheme: light !important;
-        background: #fffdf7 !important;
-      }
-      html, body {
-        width: 100% !important;
-        min-width: 100% !important;
-        min-height: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: #fffdf7 !important;
-        background-image: none !important;
-        color: #333 !important;
-        color-scheme: light !important;
-        forced-color-adjust: none !important;
-      }
-      body::before, body::after {
-        display: none !important;
-        content: none !important;
-      }
-      .container, .tarot-area, .tarot-card, .quote-reveal,
-      .quote-card, .message, .notice, button {
-        color-scheme: light !important;
-        forced-color-adjust: none !important;
-      }
-      @media (max-width: 600px) {
-        html, body {
-          width: 100vw !important;
-          min-height: 100svh !important;
-          height: 100% !important;
-          overflow-x: hidden !important;
-          background: #fffdf7 !important;
-          background-image: none !important;
-        }
-        .container {
-          width: 100% !important;
-          max-width: none !important;
-          min-height: 100svh !important;
-          box-sizing: border-box !important;
-          padding-left: max(10px, env(safe-area-inset-left)) !important;
-          padding-right: max(10px, env(safe-area-inset-right)) !important;
-        }
-        .tarot-area { width: 100% !important; box-sizing: border-box !important; }
-        .tarot-card {
-          width: min(82vw, 340px) !important;
-          max-width: 340px !important;
-        }
-        .quote-reveal {
-          width: min(94vw, 440px) !important;
-          max-width: 440px !important;
-          box-sizing: border-box !important;
-        }
-      }
-    </style>
-
 </head>
 <body>
   <main class="container">
