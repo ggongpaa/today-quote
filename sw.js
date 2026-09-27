@@ -1,44 +1,70 @@
-const CACHE_NAME = 'quote-pwa-v1';
-const ASSETS_TO_CACHE = [
+const CACHE_NAME = 'quote-pwa-v2';
+
+const STATIC_ASSETS = [
   './',
-  './index.html',
-  './quotes.json?ver=1',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'
 ];
 
-// 설치 및 파일 캐싱
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
+// 새 버전 설치
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(STATIC_ASSETS))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
-// 활성화 및 구버전 캐시 삭제
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
+// 이전 캐시 삭제 + 즉시 적용
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys()
+      .then(keys =>
+        Promise.all(
+          keys
+            .filter(key => key !== CACHE_NAME)
+            .map(key => caches.delete(key))
+        )
+      )
+      .then(() => self.clients.claim())
+  );
+});
+
+// HTML/navigation은 항상 최신 서버 파일을 우선.
+// 정적 리소스는 캐시를 사용하되 없으면 네트워크에서 가져옴.
+self.addEventListener('fetch', (event) => {
+  const request = event.request;
+
+  if (request.method !== 'GET') return;
+
+  const isNavigation =
+    request.mode === 'navigate' ||
+    request.destination === 'document' ||
+    request.url.endsWith('/index.html');
+
+  if (isNavigation) {
+    event.respondWith(
+      fetch(request)
+        .then(response => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put('./index.html', copy);
+          });
+          return response;
         })
-      );
-    })
-  );
-  self.clients.claim();
-});
+        .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
 
-// 오프라인 리소스 반환
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((response) => {
-      return response || fetch(e.request);
-    })
+  // quotes.json은 캐시에 넣지 않음.
+  if (request.url.includes('/quotes.json')) {
+    event.respondWith(fetch(request));
+    return;
+  }
+
+  event.respondWith(
+    caches.match(request).then(cached => cached || fetch(request))
   );
 });
