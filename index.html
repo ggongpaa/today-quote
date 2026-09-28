@@ -59,24 +59,7 @@
       font-size:clamp(13px,3.6vw,16px);
       color:#777b74;
       line-height:1.7;
-      margin-bottom:7px;
-    }
-
-    /* 명언 글씨보다 크게 강조된 날짜 스타일 */
-    .date {
-      font-family:"Noto Serif KR","Batang",serif;
-      font-size:clamp(20px,5.5vw,26px);
-      font-weight:700;
-      color:#405143;
-      margin:0 0 16px;
-      opacity:0;
-      transform:translateY(0);
-      pointer-events:none;
-      letter-spacing:-0.5px;
-    }
-    .date.visible {
-      opacity:1;
-      animation:quoteAppear .7s ease both;
+      margin-bottom:12px;
     }
 
     /* 카드 영역 */
@@ -196,7 +179,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:44px 34px;
+      padding:40px 30px;
       text-align:center;
       opacity:0;
       transform:translateY(12px) scale(.94);
@@ -213,7 +196,7 @@
     .quote-reveal::after {
       content:"✦";
       position:absolute;
-      top:25px;
+      top:20px;
       left:50%;
       transform:translateX(-50%);
       color:#a68e52;
@@ -224,16 +207,33 @@
       transform:translateY(0) scale(1);
     }
     #result { width:100%; position:relative; z-index:2; }
-    .quote-mark { font-family:Georgia,serif; font-size:52px; line-height:.6; color:#71866d; margin-bottom:17px; }
-    
-    /* 명언 글씨 크기 설정 */
+
+    /* 카드 내부 명언 위 상단 날짜 (명언 글씨보다 큰 스타일) */
+    .card-date {
+      font-size:clamp(20px,5.2vw,25px);
+      font-weight:700;
+      color:#405143;
+      margin-bottom:12px;
+      letter-spacing:-0.5px;
+      line-height:1.3;
+    }
+
+    .quote-mark { font-family:Georgia,serif; font-size:44px; line-height:.6; color:#71866d; margin-bottom:14px; }
     .message { font-size:clamp(15px,4.2vw,19px); line-height:1.8; font-weight:500; color:#39443b; word-break:keep-all; margin-bottom:18px; }
     .author { font-size:12px; color:#777b74; margin-bottom:12px; }
     .category { display:inline-block; padding:6px 13px; border-radius:20px; background:#e5ebe1; color:#5d6c5a; font-size:11px; }
-    .reveal-content .quote-mark,.reveal-content .message,.reveal-content .author,.reveal-content .category { animation:quoteAppear .7s ease both; }
-    .reveal-content .message { animation-delay:.12s; }
-    .reveal-content .author { animation-delay:.25s; }
-    .reveal-content .category { animation-delay:.38s; }
+    
+    .reveal-content .card-date,
+    .reveal-content .quote-mark,
+    .reveal-content .message,
+    .reveal-content .author,
+    .reveal-content .category { animation:quoteAppear .7s ease both; }
+    
+    .reveal-content .card-date { animation-delay:.05s; }
+    .reveal-content .quote-mark { animation-delay:.12s; }
+    .reveal-content .message { animation-delay:.20s; }
+    .reveal-content .author { animation-delay:.32s; }
+    .reveal-content .category { animation-delay:.42s; }
     @keyframes quoteAppear { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
     .notice { min-height:43px; font-size:12px; line-height:1.7; color:#858a82; padding:2px 10px; transition:opacity .7s ease, transform .7s ease; }
@@ -291,7 +291,6 @@
 
       .title{font-size:clamp(25px,7.2vw,32px)}
       .subtitle{font-size:clamp(13px,3.8vw,16px)}
-      .date{font-size:clamp(18px,5.2vw,24px); margin-bottom:12px}
 
       .tarot-area{
         width:100%;
@@ -310,14 +309,19 @@
         width:min(92vw,430px);
         height:min(68svh,560px);
         max-height:none;
-        padding:42px 26px;
+        padding:36px 24px;
         border-radius:26px;
         background:#fffdf8 !important;
       }
 
+      .card-date{
+        font-size:clamp(19px,5vw,23px);
+        margin-bottom:10px;
+      }
+
       .message{
-        font-size:clamp(16px,4.8vw,20px);
-        line-height:1.85;
+        font-size:clamp(15px,4.5vw,19px);
+        line-height:1.8;
       }
 
       .notice{
@@ -369,7 +373,7 @@ body::before, body::after { display:none !important; content:none !important; }
   justify-content:center !important;
   align-items:center !important;
 }
-.title,.subtitle,.date,.notice { forced-color-adjust:none !important; }
+.title,.subtitle,.notice { forced-color-adjust:none !important; }
 @media (max-width:600px) {
   body { padding:14px 8px 18px !important; }
   .container {
@@ -383,9 +387,8 @@ body::before, body::after { display:none !important; content:none !important; }
   }
   .subtitle {
     font-size:clamp(13px,3.8vw,16px) !important;
-    margin-bottom:4px !important;
+    margin-bottom:8px !important;
   }
-  .date { margin-bottom:10px !important; }
   .tarot-area {
     width:100% !important;
     min-height:0 !important;
@@ -403,7 +406,7 @@ body::before, body::after { display:none !important; content:none !important; }
     height:min(68dvh,560px) !important;
     max-height:none !important;
     aspect-ratio:.68 !important;
-    padding:34px 24px !important;
+    padding:34px 22px !important;
     background:#fffdf8 !important;
     background-image:none !important;
     color:#39443b !important;
@@ -526,7 +529,7 @@ html, body {
     }
 
     .message {
-        font-size: clamp(16px, 4.6vw, 21px) !important;
+        font-size: clamp(15px, 4.5vw, 19px) !important;
         line-height: 1.65 !important;
     }
 }
@@ -537,7 +540,6 @@ html, body {
   <main class="container">
     <div class="title" id="pageTitle">오늘의 명언을 뽑아보세요</div>
     <div class="subtitle" id="waitingMessage">잠시만 기다려주세요. 오늘의 한마디를 준비하고 있어요.</div>
-    <div class="date" id="today"></div>
 
     <section class="tarot-area" aria-label="오늘의 타로 카드">
       <div class="sparkles" aria-hidden="true">
@@ -568,7 +570,6 @@ html, body {
 
   <script>
     const STORAGE_KEY = "today_quote_result";
-    const todayElement = document.getElementById("today");
     const tarotCard = document.getElementById("tarotCard");
     const quoteReveal = document.getElementById("quoteReveal");
     const resultElement = document.getElementById("result");
@@ -580,7 +581,7 @@ html, body {
     let quotesLoaded = false;
     let revealStarted = false;
 
-    // YYYY-MM-DD 가져오기
+    // YYYY-MM-DD
     function getTodayKey() {
       const now = new Date();
       const year = now.getFullYear();
@@ -589,7 +590,7 @@ html, body {
       return `${year}-${month}-${day}`;
     }
 
-    // yyyy년 mm월 dd일 (요일) 형식 생성
+    // yyyy년 mm월 dd일 (화) 형식
     function getTodayFormatted() {
       const now = new Date();
       const year = now.getFullYear();
@@ -600,10 +601,6 @@ html, body {
       const dayName = dayNames[now.getDay()];
 
       return `${year}년 ${month}월 ${day}일 (${dayName})`;
-    }
-
-    function displayToday() {
-      todayElement.textContent = getTodayFormatted();
     }
 
     function escapeHtml(value) {
@@ -618,6 +615,7 @@ html, body {
     function showQuote(quote) {
       resultElement.classList.remove("reveal-content");
       resultElement.innerHTML = `
+        <div class="card-date">${getTodayFormatted()}</div>
         <div class="quote-mark">“</div>
         <div class="message">${escapeHtml(quote.text)}</div>
         <div class="author">— ${escapeHtml(quote.author)}</div>
@@ -650,23 +648,19 @@ html, body {
       if (revealStarted) return;
       revealStarted = true;
 
-      // 카드가 사라지는 순간, 준비 안내 문구도 함께 사라지게 함
+      // 카드가 사라지는 순간, 준비 안내 문구도 함께 사라짐
       pageTitle.classList.add("disappearing");
       waitingMessage.classList.add("disappearing");
       noticeElement.classList.add("disappearing");
 
       showQuote(quote);
 
-      // 카드가 흔들림을 멈추고 부드럽게 사라짐
+      // 카드가 흔들림을 멈추고 모래처럼 부드럽게 사라짐
       tarotCard.classList.remove("shaking");
       tarotCard.classList.add("revealing");
 
-      // 날짜 텍스트 업데이트
-      displayToday();
-
-      // 카드가 사라지는 시점에 명언 카드와 커진 날짜 함께 표시
+      // 카드 등장
       setTimeout(() => {
-        todayElement.classList.add("visible");
         quoteReveal.classList.add("visible");
       }, 620);
 
@@ -723,7 +717,7 @@ html, body {
 
     loadQuotes();
 
-    // 화면이 열린 뒤 1초 후 자동 연출 실행
+    // 화면이 열린 뒤 정확히 1초 후 자동 연출
     window.addEventListener("load", () => {
       setTimeout(waitAndReveal, 1000);
     });
