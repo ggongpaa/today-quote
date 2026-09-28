@@ -177,9 +177,9 @@
       border:1px solid #ded8ca;
       box-shadow:0 20px 30px rgba(57,68,59,.16), inset 0 0 0 1px rgba(255,255,255,.65);
       display:flex;
-      align-items:center;
+      align-items:stretch;
       justify-content:center;
-      padding:40px 30px;
+      padding:32px 28px;
       text-align:center;
       opacity:0;
       transform:translateY(12px) scale(.94);
@@ -193,35 +193,54 @@
       border:1px solid #b7bcae;
       border-radius:17px;
     }
-    .quote-reveal::after {
-      content:"✦";
-      position:absolute;
-      top:20px;
-      left:50%;
-      transform:translateX(-50%);
-      color:#a68e52;
-      font-size:17px;
-    }
     .quote-reveal.visible {
       opacity:1;
       transform:translateY(0) scale(1);
     }
-    #result { width:100%; position:relative; z-index:2; }
+    
+    /* 레이아웃 분할: 날짜가 상단 여백 중앙에 위치하도록 스페이스 조절 */
+    #result { 
+      width:100%; 
+      height:100%;
+      position:relative; 
+      z-index:2; 
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      align-items:center;
+    }
 
-    /* 카드 내부 명언 위 상단 날짜 (명언 글씨보다 큰 스타일) */
+    .card-top {
+      width:100%;
+      flex:1 1 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding-top:6px;
+    }
+
+    /* 카드 내 상단 중앙 날짜 스타일 */
     .card-date {
       font-size:clamp(20px,5.2vw,25px);
       font-weight:700;
       color:#405143;
-      margin-bottom:12px;
       letter-spacing:-0.5px;
-      line-height:1.3;
+      line-height:1.2;
     }
 
-    .quote-mark { font-family:Georgia,serif; font-size:44px; line-height:.6; color:#71866d; margin-bottom:14px; }
-    .message { font-size:clamp(15px,4.2vw,19px); line-height:1.8; font-weight:500; color:#39443b; word-break:keep-all; margin-bottom:18px; }
-    .author { font-size:12px; color:#777b74; margin-bottom:12px; }
-    .category { display:inline-block; padding:6px 13px; border-radius:20px; background:#e5ebe1; color:#5d6c5a; font-size:11px; }
+    .card-body {
+      width:100%;
+      flex:2 1 auto;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .quote-mark { font-family:Georgia,serif; font-size:40px; line-height:.6; color:#71866d; margin-bottom:12px; }
+    .message { font-size:clamp(15px,4.2vw,19px); line-height:1.75; font-weight:500; color:#39443b; word-break:keep-all; margin-bottom:14px; }
+    .author { font-size:12px; color:#777b74; margin-bottom:10px; }
+    .category { display:inline-block; padding:5px 12px; border-radius:20px; background:#e5ebe1; color:#5d6c5a; font-size:11px; }
     
     .reveal-content .card-date,
     .reveal-content .quote-mark,
@@ -258,7 +277,7 @@
       font-weight:500;
       padding-top:8px;
     }
-    .loading,.error { font-size:13px; color:#888; line-height:1.7; }
+    .loading,.error { font-size:13px; color:#888; line-height:1.7; margin:auto; }
     .error { color:#a05b5b; }
 
     .sparkles { position:absolute; inset:0; pointer-events:none; }
@@ -309,19 +328,18 @@
         width:min(92vw,430px);
         height:min(68svh,560px);
         max-height:none;
-        padding:36px 24px;
+        padding:28px 20px;
         border-radius:26px;
         background:#fffdf8 !important;
       }
 
       .card-date{
         font-size:clamp(19px,5vw,23px);
-        margin-bottom:10px;
       }
 
       .message{
         font-size:clamp(15px,4.5vw,19px);
-        line-height:1.8;
+        line-height:1.75;
       }
 
       .notice{
@@ -341,7 +359,7 @@
       }
     }
   
-/* ===== FINAL MOBILE / LIGHT MODE OVERRIDES ===== */
+/* ===== 모바일 및 라이트 모드 오버라이드 ===== */
 html {
   width:100% !important;
   min-height:100% !important;
@@ -406,7 +424,7 @@ body::before, body::after { display:none !important; content:none !important; }
     height:min(68dvh,560px) !important;
     max-height:none !important;
     aspect-ratio:.68 !important;
-    padding:34px 22px !important;
+    padding:30px 20px !important;
     background:#fffdf8 !important;
     background-image:none !important;
     color:#39443b !important;
@@ -428,7 +446,7 @@ body::before, body::after { display:none !important; content:none !important; }
   </style>
 
 <style>
-/* ===== FINAL MOBILE FULLSCREEN LAYOUT ===== */
+/* ===== 모바일 전체화면 레이아웃 ===== */
 html, body {
     width: 100% !important;
     min-width: 100% !important;
@@ -477,12 +495,6 @@ html, body {
         justify-content: center !important;
     }
 
-    .header {
-        width: 100% !important;
-        flex: 0 0 auto !important;
-        text-align: center !important;
-    }
-
     .tarot-area {
         width: 100% !important;
         min-width: 100% !important;
@@ -518,14 +530,6 @@ html, body {
         width: 100% !important;
         box-sizing: border-box !important;
         flex: 0 0 auto !important;
-    }
-
-    h1 {
-        font-size: clamp(24px, 7vw, 34px) !important;
-    }
-
-    .subtitle {
-        font-size: clamp(13px, 3.8vw, 17px) !important;
     }
 
     .message {
@@ -615,11 +619,15 @@ html, body {
     function showQuote(quote) {
       resultElement.classList.remove("reveal-content");
       resultElement.innerHTML = `
-        <div class="card-date">${getTodayFormatted()}</div>
-        <div class="quote-mark">“</div>
-        <div class="message">${escapeHtml(quote.text)}</div>
-        <div class="author">— ${escapeHtml(quote.author)}</div>
-        ${quote.category ? `<div class="category">${escapeHtml(quote.category)}</div>` : ""}
+        <div class="card-top">
+          <div class="card-date">${getTodayFormatted()}</div>
+        </div>
+        <div class="card-body">
+          <div class="quote-mark">“</div>
+          <div class="message">${escapeHtml(quote.text)}</div>
+          <div class="author">— ${escapeHtml(quote.author)}</div>
+          ${quote.category ? `<div class="category">${escapeHtml(quote.category)}</div>` : ""}
+        </div>
       `;
       void resultElement.offsetWidth;
       resultElement.classList.add("reveal-content");
@@ -648,18 +656,17 @@ html, body {
       if (revealStarted) return;
       revealStarted = true;
 
-      // 카드가 사라지는 순간, 준비 안내 문구도 함께 사라짐
+      // 카드가 사라지는 순간 준비 문구 숨김
       pageTitle.classList.add("disappearing");
       waitingMessage.classList.add("disappearing");
       noticeElement.classList.add("disappearing");
 
       showQuote(quote);
 
-      // 카드가 흔들림을 멈추고 모래처럼 부드럽게 사라짐
+      // 카드 전환 애니메이션
       tarotCard.classList.remove("shaking");
       tarotCard.classList.add("revealing");
 
-      // 카드 등장
       setTimeout(() => {
         quoteReveal.classList.add("visible");
       }, 620);
@@ -706,7 +713,6 @@ html, body {
         const data = await response.json();
         if (!Array.isArray(data)) throw new Error("quotes.json 형식이 올바르지 않습니다.");
         quotes = data;
-        console.log(`명언 ${quotes.length}개를 불러왔습니다.`);
       } catch (error) {
         console.error("명언 데이터 불러오기 실패:", error);
         quotes = [];
@@ -717,7 +723,6 @@ html, body {
 
     loadQuotes();
 
-    // 화면이 열린 뒤 정확히 1초 후 자동 연출
     window.addEventListener("load", () => {
       setTimeout(waitAndReveal, 1000);
     });
