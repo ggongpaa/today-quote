@@ -224,24 +224,28 @@
       margin: 0;
     }
 
+    /* 3줄 그리드: [따옴표] / [명언 문장] / [작가·카테고리]
+       위·아래 줄이 똑같이 늘어나므로 명언 문장이 카드 정중앙에 위치 */
     .card-body {
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      align-self: stretch;
+      display: grid;
+      grid-template-rows: 1fr auto 1fr;
+      justify-items: center;
     }
+    .quote-top { align-self: end; }
+    .quote-bottom { align-self: start; display: flex; flex-direction: column; align-items: center; }
 
-    .quote-mark { font-family: Georgia, serif; font-size: 36px; line-height: .6; color: #71866d; margin-bottom: 10px; }
+    .quote-mark { font-family: Georgia, serif; font-size: 36px; line-height: .6; color: #71866d; margin-bottom: 12px; }
     .message {
       font-size: clamp(15px, calc(var(--card-w) * .05), 22px);
       line-height: 1.7;
       font-weight: 500;
       color: #39443b;
       word-break: keep-all;
-      margin-bottom: 12px;
+      margin: 0;
     }
-    .author { font-size: 12px; color: #777b74; margin-bottom: 10px; }
+    .author { font-size: 12px; color: #777b74; margin: 12px 0 10px; }
     .category { display: inline-block; padding: 5px 12px; border-radius: 20px; background: #e5ebe1; color: #5d6c5a; font-size: 11px; }
 
     .reveal-content .card-date,
@@ -378,10 +382,12 @@
       resultElement.innerHTML = `
         <div class="card-date">${getTodayFormatted()}</div>
         <div class="card-body">
-          <div class="quote-mark">“</div>
+          <div class="quote-top"><div class="quote-mark">“</div></div>
           <div class="message">${escapeHtml(quote.text)}</div>
-          <div class="author">— ${escapeHtml(quote.author)}</div>
-          ${quote.category ? `<div class="category">${escapeHtml(quote.category)}</div>` : ""}
+          <div class="quote-bottom">
+            <div class="author">— ${escapeHtml(quote.author)}</div>
+            ${quote.category ? `<div class="category">${escapeHtml(quote.category)}</div>` : ""}
+          </div>
         </div>
       `;
       void resultElement.offsetWidth;
