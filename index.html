@@ -61,21 +61,21 @@
       line-height:1.7;
       margin-bottom:7px;
     }
-    /* 첫 화면에서는 날짜를 숨기고, 명언 카드가 나타나는 순간 함께 표시 */
+
+    /* 명언 글씨보다 크게 강조된 날짜 스타일 */
     .date {
-      font-size:13px;
-      color:#858a82;
-      margin:0 0 12px;
+      font-family:"Noto Serif KR","Batang",serif;
+      font-size:clamp(20px,5.5vw,26px);
+      font-weight:700;
+      color:#405143;
+      margin:0 0 16px;
       opacity:0;
       transform:translateY(0);
       pointer-events:none;
+      letter-spacing:-0.5px;
     }
     .date.visible {
       opacity:1;
-    }
-
-    /* 날짜와 명언이 같은 타이밍에 자연스럽게 나타나도록 */
-    .date.visible {
       animation:quoteAppear .7s ease both;
     }
 
@@ -110,7 +110,6 @@
       to   { transform:translateX(3px) rotate(1.1deg); }
     }
 
-    /* 카드가 사라진 뒤 명언 카드가 나타나는 구조 */
     .tarot-card {
       transition: opacity .75s ease, transform .75s ease, filter .75s ease;
     }
@@ -226,6 +225,8 @@
     }
     #result { width:100%; position:relative; z-index:2; }
     .quote-mark { font-family:Georgia,serif; font-size:52px; line-height:.6; color:#71866d; margin-bottom:17px; }
+    
+    /* 명언 글씨 크기 설정 */
     .message { font-size:clamp(15px,4.2vw,19px); line-height:1.8; font-weight:500; color:#39443b; word-break:keep-all; margin-bottom:18px; }
     .author { font-size:12px; color:#777b74; margin-bottom:12px; }
     .category { display:inline-block; padding:6px 13px; border-radius:20px; background:#e5ebe1; color:#5d6c5a; font-size:11px; }
@@ -290,7 +291,7 @@
 
       .title{font-size:clamp(25px,7.2vw,32px)}
       .subtitle{font-size:clamp(13px,3.8vw,16px)}
-      .date{margin-bottom:10px}
+      .date{font-size:clamp(18px,5.2vw,24px); margin-bottom:12px}
 
       .tarot-area{
         width:100%;
@@ -384,7 +385,7 @@ body::before, body::after { display:none !important; content:none !important; }
     font-size:clamp(13px,3.8vw,16px) !important;
     margin-bottom:4px !important;
   }
-  .date { margin-bottom:6px !important; }
+  .date { margin-bottom:10px !important; }
   .tarot-area {
     width:100% !important;
     min-height:0 !important;
@@ -579,7 +580,8 @@ html, body {
     let quotesLoaded = false;
     let revealStarted = false;
 
-    function getToday() {
+    // YYYY-MM-DD 가져오기
+    function getTodayKey() {
       const now = new Date();
       const year = now.getFullYear();
       const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -587,9 +589,21 @@ html, body {
       return `${year}-${month}-${day}`;
     }
 
+    // yyyy년 mm월 dd일 (요일) 형식 생성
+    function getTodayFormatted() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      
+      const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+      const dayName = dayNames[now.getDay()];
+
+      return `${year}년 ${month}월 ${day}일 (${dayName})`;
+    }
+
     function displayToday() {
-      const [year, month, day] = getToday().split("-");
-      todayElement.textContent = `${year}년 ${Number(month)}월 ${Number(day)}일`;
+      todayElement.textContent = getTodayFormatted();
     }
 
     function escapeHtml(value) {
@@ -618,7 +632,7 @@ html, body {
       if (!saved) return null;
       try {
         const data = JSON.parse(saved);
-        return data.date === getToday() ? data.quote : null;
+        return data.date === getTodayKey() ? data.quote : null;
       } catch (error) {
         console.warn("저장된 명언 확인 오류:", error);
         return null;
@@ -627,7 +641,7 @@ html, body {
 
     function saveQuote(quote) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        date: getToday(),
+        date: getTodayKey(),
         quote
       }));
     }
@@ -636,21 +650,22 @@ html, body {
       if (revealStarted) return;
       revealStarted = true;
 
-      // 카드가 사라지는 순간, 준비 안내 문구도 함께 사라지게 한다.
+      // 카드가 사라지는 순간, 준비 안내 문구도 함께 사라지게 함
       pageTitle.classList.add("disappearing");
       waitingMessage.classList.add("disappearing");
       noticeElement.classList.add("disappearing");
 
       showQuote(quote);
 
-      // 카드가 흔들림을 멈추고 모래처럼 부드럽게 사라진다.
+      // 카드가 흔들림을 멈추고 부드럽게 사라짐
       tarotCard.classList.remove("shaking");
       tarotCard.classList.add("revealing");
 
-      // 카드가 사라지는 동안 명언 카드는 뒤에서 준비하고,
-      // 카드가 거의 사라진 뒤 명언 카드만 자연스럽게 등장시킨다.
+      // 날짜 텍스트 업데이트
+      displayToday();
+
+      // 카드가 사라지는 시점에 명언 카드와 커진 날짜 함께 표시
       setTimeout(() => {
-        // 날짜와 명언 카드를 정확히 같은 시점에 표시
         todayElement.classList.add("visible");
         quoteReveal.classList.add("visible");
       }, 620);
@@ -706,10 +721,9 @@ html, body {
       }
     }
 
-    // 첫 화면에서는 날짜를 숨기고, 명언 카드가 나타나는 순간 날짜도 함께 보여준다.
     loadQuotes();
 
-    // 화면이 열린 뒤 정확히 1초 동안 흔들린 후 자동 공개
+    // 화면이 열린 뒤 1초 후 자동 연출 실행
     window.addEventListener("load", () => {
       setTimeout(waitAndReveal, 1000);
     });
